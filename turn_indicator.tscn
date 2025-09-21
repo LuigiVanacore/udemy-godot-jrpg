@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1nw407goun4g"]
+
+[ext_resource type="Script" uid="uid://b3gcjtbgopv5x" path="res://turn_indicator.gd" id="1_knjlf"]
+[ext_resource type="Texture2D" uid="uid://d3nua3h52j7bd" path="res://assets/ChatGPT Image 17 set 2025, 15_43_06.png" id="2_n2vm0"]
+
+[node name="TurnIndicator" type="Node2D"]
+script = ExtResource("1_knjlf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.020996094, 0.018066406)
+texture = ExtResource("2_n2vm0")

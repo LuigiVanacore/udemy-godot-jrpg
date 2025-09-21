@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://dqh8amt6wwuvm"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://danfnnhiton" path="res://assets/battle/battleChars/bchar_brigand00-idle00.png" id="2_fjby1"]
+
+[resource]
+script = ExtResource("1")
+id = &"idle"
+texture = ExtResource("2_fjby1")

@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://502bbrd3bubs"]
+
+[ext_resource type="Texture2D" uid="uid://d1dofgixbnq7s" path="res://assets/ui_unit_hud/ui_life_bar/life_bar_bg.png" id="1_smnqy"]
+[ext_resource type="Texture2D" uid="uid://vvw453gjgkj8" path="res://assets/ui_unit_hud/ui_life_bar/life_bar_fill.png" id="2_6kbwc"]
+
+[node name="UI_UnitLifeBar" type="Control"]
+custom_minimum_size = Vector2(50, 10)
+layout_mode = 3
+anchor_right = 0.0390625
+anchor_bottom = 0.013888889
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_smnqy")
+texture_progress = ExtResource("2_6kbwc")

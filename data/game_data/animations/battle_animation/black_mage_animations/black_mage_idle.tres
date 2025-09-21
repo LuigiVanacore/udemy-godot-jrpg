@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://vkaw4lvov5vf"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1_gqn37"]
+[ext_resource type="Texture2D" uid="uid://dklupbx3va2cl" path="res://assets/battle/battleChars/20250618occultist-idle.png" id="2_wkefv"]
+
+[resource]
+script = ExtResource("1_gqn37")
+id = &"idle"
+texture = ExtResource("2_wkefv")
+hframes = 4
+vframes = 2
+metadata/_custom_type_script = "uid://cy4a34d0tda4r"

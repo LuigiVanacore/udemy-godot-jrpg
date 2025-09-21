@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4hlry1eiw4dw"]
+
+[ext_resource type="Script" uid="uid://diiqaf4pvxa8k" path="res://turn_badge.gd" id="1_jh85n"]
+
+[node name="TurnBadge" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jh85n")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

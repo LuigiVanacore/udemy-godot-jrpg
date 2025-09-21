@@ -1,0 +1,3 @@
+@set ASEPRITE="C:\Program Files (x86)\Steam\steamapps\common\Aseprite\Aseprite.exe"
+
+for /F "delims= " %%G in ('%ASEPRITE% -b --list-layers Sprite.ase') DO ( %ASEPRITE% -b --layer "%%G" "Sprite.ase" --sheet-columns "3" --sheet "%%G.png")

@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3 uid="uid://cemikp8iq4l0y"]
+
+[ext_resource type="Script" uid="uid://dwwjjtcypkcat" path="res://unit.gd" id="1_ctwoc"]
+[ext_resource type="Resource" uid="uid://brlllob65dk34" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_animation_set2.tres" id="2_davkp"]
+[ext_resource type="Texture2D" uid="uid://dp3538jgfvgi4" path="res://assets/battle/battleChars/20250618occultist-damage.png" id="3_5wnup"]
+[ext_resource type="PackedScene" uid="uid://502bbrd3bubs" path="res://scenes/UI/ui_unit_lifebar/ui_unit_life_bar.tscn" id="4_5wnup"]
+
+[node name="Unit" type="Node2D"]
+script = ExtResource("1_ctwoc")
+anim_set = ExtResource("2_davkp")
+
+[node name="LimboHSM" type="LimboHSM" parent="."]
+
+[node name="IdleState" type="LimboState" parent="LimboHSM"]
+
+[node name="AttackState" type="LimboState" parent="LimboHSM"]
+
+[node name="BlockState" type="LimboState" parent="LimboHSM"]
+
+[node name="ItemState" type="LimboState" parent="LimboHSM"]
+
+[node name="DodgeState" type="LimboState" parent="LimboHSM"]
+
+[node name="WeakState" type="LimboState" parent="LimboHSM"]
+
+[node name="DamageState" type="LimboState" parent="LimboHSM"]
+
+[node name="Pivot" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(28, 19)
+
+[node name="Body" type="Sprite2D" parent="Pivot"]
+position = Vector2(-28, -19)
+scale = Vector2(2, 2)
+texture = ExtResource("3_5wnup")
+hframes = 4
+
+[node name="Weapon" type="Sprite2D" parent="Pivot"]
+position = Vector2(-28, -19)
+
+[node name="UI_UnitLifeBar" parent="Pivot" instance=ExtResource("4_5wnup")]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.0
+offset_top = -59.0
+offset_right = -3.0
+offset_bottom = -49.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+
+[node name="TargetMarker" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(28, 19)

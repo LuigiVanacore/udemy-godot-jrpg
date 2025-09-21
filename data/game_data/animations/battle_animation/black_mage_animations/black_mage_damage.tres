@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://bdj0lgrn84fbi"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1_vx2kc"]
+[ext_resource type="Texture2D" uid="uid://dp3538jgfvgi4" path="res://assets/battle/battleChars/20250618occultist-damage.png" id="2_twkg5"]
+
+[resource]
+script = ExtResource("1_vx2kc")
+id = &"damage"
+texture = ExtResource("2_twkg5")
+metadata/_custom_type_script = "uid://cy4a34d0tda4r"

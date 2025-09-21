@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://cpu4bmav162fg"]
+
+[ext_resource type="Script" uid="uid://dqte7p8810vcc" path="res://player.gd" id="1_sweqy"]
+[ext_resource type="Texture2D" uid="uid://dm1orsqp7inch" path="res://assets/char_workshop/samples/outlined/6f/20240910_6f_hero_fighter00.png" id="2_2hs0m"]
+[ext_resource type="Script" uid="uid://vws5ykyx5x0t" path="res://interaction_area.gd" id="3_1jxqw"]
+[ext_resource type="Script" uid="uid://ccyewt7c10gjq" path="res://encounter_meter.gd" id="5_b26j0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_n7ghd"]
+radius = 9.0
+height = 36.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nvl01"]
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_sweqy")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_2hs0m")
+hframes = 6
+vframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_n7ghd")
+
+[node name="InteractionArea" type="Area2D" parent="."]
+script = ExtResource("3_1jxqw")
+debug_draw = true
+
+[node name="Shape" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("RectangleShape2D_nvl01")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = false
+
+[node name="EncounterMeter" type="Node" parent="."]
+script = ExtResource("5_b26j0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]

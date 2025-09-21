@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=2 format=3 uid="uid://di71546umpahx"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1_psm7c"]
+
+[resource]
+script = ExtResource("1_psm7c")
+id = &"bat_attack"

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://c87i661kkfsd0"]
+
+[ext_resource type="SpriteFrames" uid="uid://cta7vmt3h5651" path="res://scenes/UI/ui_cursor/cursor_animated.tres" id="1_jee2l"]
+
+[node name="UI_Menu_Cursor" type="Marker2D"]
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("1_jee2l")
+autoplay = "default"
+frame_progress = 0.26907918
+centered = false
+flip_h = true

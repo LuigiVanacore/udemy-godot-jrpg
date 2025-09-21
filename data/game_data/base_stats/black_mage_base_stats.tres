@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="StatsData" load_steps=2 format=3 uid="uid://dv5hhbqegr4hs"]
+
+[ext_resource type="Script" uid="uid://bstw3y7x1bhm0" path="res://data/scripts/stats_data.gd" id="1_jfnv0"]
+
+[resource]
+script = ExtResource("1_jfnv0")
+HP_MAX = 90.0
+MP_MAX = 120.0
+ATK = 4.0
+DEF = 6.0
+MATK = 22.0
+MDEF = 12.0
+ACC = 0.98
+EVA = 0.07
+CRIT_RATE = 0.1
+CRIT_DMG = 1.6
+SPEED = 95.0
+metadata/_custom_type_script = "uid://bstw3y7x1bhm0"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="StatsData" load_steps=2 format=3 uid="uid://dufiymqwd0xjh"]
+
+[ext_resource type="Script" uid="uid://bstw3y7x1bhm0" path="res://data/scripts/stats_data.gd" id="1_64x1e"]
+
+[resource]
+script = ExtResource("1_64x1e")
+HP_MAX = 180.0
+ATK = 18.0
+DEF = 12.0
+MATK = 4.0
+MDEF = 6.0
+ACC = 0.9
+metadata/_custom_type_script = "uid://bstw3y7x1bhm0"

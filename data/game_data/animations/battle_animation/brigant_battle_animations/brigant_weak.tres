@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://cdlfl8il4sbv3"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://k44jljvp35c" path="res://assets/battle/battleChars/bchar_brigand00-weak.png" id="2_ypexs"]
+
+[resource]
+script = ExtResource("1")
+id = &"weak"
+texture = ExtResource("2_ypexs")

@@ -1,0 +1,53 @@
+[gd_resource type="SpriteFrames" load_steps=8 format=3 uid="uid://cta7vmt3h5651"]
+
+[ext_resource type="Texture2D" uid="uid://bddt6urbdv5e4" path="res://assets/battle/GUI/gui_cursor05.png" id="1_lcj0o"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcj0o"]
+atlas = ExtResource("1_lcj0o")
+region = Rect2(0, 0, 28, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k7kp2"]
+atlas = ExtResource("1_lcj0o")
+region = Rect2(28, 0, 28, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffoj4"]
+atlas = ExtResource("1_lcj0o")
+region = Rect2(56, 0, 28, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d0dcj"]
+atlas = ExtResource("1_lcj0o")
+region = Rect2(84, 0, 28, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehk7b"]
+atlas = ExtResource("1_lcj0o")
+region = Rect2(112, 0, 28, 22)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_msdiq"]
+atlas = ExtResource("1_lcj0o")
+region = Rect2(0, 22, 28, 22)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcj0o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k7kp2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ffoj4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d0dcj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ehk7b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_msdiq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]

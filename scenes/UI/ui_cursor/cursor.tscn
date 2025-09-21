@@ -1,0 +1,32 @@
+[gd_scene load_steps=9 format=3 uid="uid://c7joc7ff5e04c"]
+
+[ext_resource type="Texture2D" uid="uid://bnqf4hu03j3oi" path="res://assets/battle/GUI/cursor_1.png" id="1_hyjto"]
+[ext_resource type="Texture2D" uid="uid://dtq4285lng2cu" path="res://assets/battle/GUI/cursor_2.png" id="2_46ktr"]
+[ext_resource type="Texture2D" uid="uid://cm7lebdjj8ais" path="res://assets/battle/GUI/cursor_3.png" id="3_fq72x"]
+[ext_resource type="Texture2D" uid="uid://bi4pe7cpjmljh" path="res://assets/battle/GUI/cursor_4.png" id="4_4gpvc"]
+[ext_resource type="Texture2D" uid="uid://cstl614cldgka" path="res://assets/battle/GUI/cursor_5.png" id="5_w2ofj"]
+[ext_resource type="Texture2D" uid="uid://beqxr5fo3s10q" path="res://assets/battle/GUI/cursor_6.png" id="6_heda3"]
+[ext_resource type="Script" uid="uid://bev71bnxhj4by" path="res://scenes/UI/ui_cursor/cursor.gd" id="7_46ktr"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_2ytk7"]
+frames = 6
+frame_0/texture = ExtResource("1_hyjto")
+frame_0/duration = 0.16
+frame_1/texture = ExtResource("2_46ktr")
+frame_1/duration = 0.16
+frame_2/texture = ExtResource("3_fq72x")
+frame_2/duration = 0.16
+frame_3/texture = ExtResource("4_4gpvc")
+frame_3/duration = 0.16
+frame_4/texture = ExtResource("5_w2ofj")
+frame_4/duration = 0.16
+frame_5/texture = ExtResource("6_heda3")
+frame_5/duration = 0.16
+
+[node name="TextureRect" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 40.0
+pivot_offset = Vector2(0, 14)
+texture = SubResource("AnimatedTexture_2ytk7")
+flip_h = true
+script = ExtResource("7_46ktr")

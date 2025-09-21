@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://cjaa6ggxorqme"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1_kpjg3"]
+[ext_resource type="Texture2D" uid="uid://cwnlvmgw8cleo" path="res://assets/battle/battleChars/20250618occultist-movingForward.png" id="2_f0l2r"]
+
+[resource]
+script = ExtResource("1_kpjg3")
+id = &"moving_forward"
+texture = ExtResource("2_f0l2r")
+metadata/_custom_type_script = "uid://cy4a34d0tda4r"

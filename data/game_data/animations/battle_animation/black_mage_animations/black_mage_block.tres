@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://dcy283tv2vtus"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1_jbml2"]
+[ext_resource type="Texture2D" uid="uid://dgtxmmknobk2v" path="res://assets/battle/battleChars/20250618occultist-block.png" id="2_v83ew"]
+
+[resource]
+script = ExtResource("1_jbml2")
+id = &"block"
+texture = ExtResource("2_v83ew")
+metadata/_custom_type_script = "uid://cy4a34d0tda4r"

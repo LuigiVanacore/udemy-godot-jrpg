@@ -1,0 +1,158 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7xxaqs5jvvbm"]
+
+[ext_resource type="Script" uid="uid://bclf40ajc44ru" path="res://scenes/UI/battle_hud/battle_hud.gd" id="1_gnohy"]
+[ext_resource type="PackedScene" uid="uid://d55qmd5kmvjk" path="res://scenes/UI/ui_actions_menu/ui_action_menu.tscn" id="2_8qey4"]
+[ext_resource type="PackedScene" uid="uid://d3jvm3gvemxqx" path="res://scenes/UI/ui_character_status_menu/ui_character_status_menu.tscn" id="2_gnohy"]
+
+[node name="BattleHUD" type="CanvasLayer"]
+script = ExtResource("1_gnohy")
+
+[node name="PartyMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Letterbox" type="Control" parent="PartyMenu"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Control3" type="Control" parent="PartyMenu"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PartyMenu/Control3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopInfoBar" type="HBoxContainer" parent="PartyMenu/Control3/MarginContainer"]
+layout_mode = 2
+
+[node name="ObjectiveLabel" type="Label" parent="PartyMenu/Control3/MarginContainer/TopInfoBar"]
+layout_mode = 2
+
+[node name="BattleLogButton" type="Button" parent="PartyMenu/Control3/MarginContainer/TopInfoBar"]
+layout_mode = 2
+
+[node name="BattleLogPanel" type="Control" parent="PartyMenu"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="PartyMenu/BattleLogPanel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LogText" type="RichTextLabel" parent="PartyMenu/BattleLogPanel/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="UI_CharacterStatusMenu" parent="PartyMenu" instance=ExtResource("2_gnohy")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="Control" type="Control" parent="PartyMenu"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -194.0
+offset_right = 394.0
+grow_vertical = 0
+
+[node name="UI_ActionMenu" parent="PartyMenu/Control" instance=ExtResource("2_8qey4")]
+layout_mode = 1
+offset_left = 6.0
+offset_top = 12.0
+offset_right = 6.0
+offset_bottom = -5.0
+
+[node name="Control2" type="Control" parent="PartyMenu"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="PartyMenu/Control2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemList" type="ItemList" parent="PartyMenu/Control2/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel2" type="Panel" parent="PartyMenu/Control2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PartyMenu/Control2/Panel2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="OptionButton" type="OptionButton" parent="PartyMenu/Control2/Panel2/HBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="PartyMenu/Control2/Panel2/HBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PartyMenu/Control2/Panel2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PartyMenu/Control2/Panel2/ScrollContainer"]
+layout_mode = 2
+
+[node name="Panel3" type="Panel" parent="PartyMenu/Control2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemList" type="ItemList" parent="PartyMenu/Control2/Panel3"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Control4" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+mouse_filter = 1
+
+[node name="BtnStartBattle" type="Button" parent="Control4"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -52.5
+offset_right = 52.5
+offset_bottom = 36.0
+grow_horizontal = 2
+focus_mode = 0
+text = "Start Battle"
+
+[connection signal="pressed" from="Control4/BtnStartBattle" to="." method="_on_btn_start_battle_pressed"]

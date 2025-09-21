@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://r50w7sv1ro3w"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1_6fbby"]
+[ext_resource type="Texture2D" uid="uid://bafwld12d4l77" path="res://assets/battle/battleChars/20250618occultist-pierceAttack.png" id="2_6fbby"]
+
+[resource]
+script = ExtResource("1_6fbby")
+id = &"pierce_attack"
+texture = ExtResource("2_6fbby")
+metadata/_custom_type_script = "uid://cy4a34d0tda4r"

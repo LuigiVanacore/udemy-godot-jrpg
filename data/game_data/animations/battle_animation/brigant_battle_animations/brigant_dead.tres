@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://duwuxwaussnp3"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://c688y5wd0nuv7" path="res://assets/battle/battleChars/bchar_brigand00-dead.png" id="2_21236"]
+
+[resource]
+script = ExtResource("1")
+id = &"dead"
+texture = ExtResource("2_21236")

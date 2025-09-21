@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://c1grqrhxn652v"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1_50c4r"]
+[ext_resource type="Texture2D" uid="uid://cwqvb02a47dvy" path="res://assets/battle/battleChars/20250618occultist-slashAttack.png" id="2_jjrb5"]
+
+[resource]
+script = ExtResource("1_50c4r")
+id = &"slash_attack"
+texture = ExtResource("2_jjrb5")
+metadata/_custom_type_script = "uid://cy4a34d0tda4r"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AnimClipData" load_steps=3 format=3 uid="uid://c2kypj11t8ahr"]
+
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="1_8eear"]
+[ext_resource type="Texture2D" uid="uid://cf5vr5qpk4lbe" path="res://assets/battle/battleChars/20250618occultist-weak.png" id="2_85a44"]
+
+[resource]
+script = ExtResource("1_8eear")
+id = &"weak"
+texture = ExtResource("2_85a44")
+metadata/_custom_type_script = "uid://cy4a34d0tda4r"

@@ -1,0 +1,58 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3jvm3gvemxqx"]
+
+[ext_resource type="Script" uid="uid://djgxfo2yykwo2" path="res://scenes/UI/ui_character_status_menu/ui_character_status_menu.gd" id="1_1plp4"]
+[ext_resource type="PackedScene" uid="uid://cgth8le8edgoi" path="res://scenes/UI/character_status_card/character_status_card.tscn" id="1_tmoxn"]
+
+[node name="UI_CharacterStatusMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -49.0
+offset_right = 1.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_1plp4")
+metadata/_edit_group_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -213.5
+offset_top = -42.5
+offset_right = 213.5
+offset_bottom = 42.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PartyStatusDock" type="HBoxContainer" parent="MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CharacterStatusCard" parent="MarginContainer/PartyStatusDock" instance=ExtResource("1_tmoxn")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CharacterStatusCard2" parent="MarginContainer/PartyStatusDock" instance=ExtResource("1_tmoxn")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CharacterStatusCard3" parent="MarginContainer/PartyStatusDock" instance=ExtResource("1_tmoxn")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CharacterStatusCard4" parent="MarginContainer/PartyStatusDock" instance=ExtResource("1_tmoxn")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3

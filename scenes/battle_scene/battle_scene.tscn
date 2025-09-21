@@ -1,0 +1,109 @@
+[gd_scene load_steps=14 format=3 uid="uid://dpx1ew27j6jnx"]
+
+[ext_resource type="Script" uid="uid://cyn67ewg7ebsb" path="res://scenes/battle_scene/battle_scene.gd" id="1_dkakg"]
+[ext_resource type="Script" uid="uid://dy3dgclpof8ij" path="res://turn_manager.gd" id="2_e2rkv"]
+[ext_resource type="Texture2D" uid="uid://c8rvx14iucwrd" path="res://assets/battle/BG/bg_plains00.png" id="3_4jw7k"]
+[ext_resource type="Script" uid="uid://d1688ufs7usjx" path="res://battle_background.gd" id="4_1net8"]
+[ext_resource type="PackedScene" uid="uid://d1nw407goun4g" path="res://turn_indicator.tscn" id="5_sw16a"]
+[ext_resource type="PackedScene" uid="uid://cemikp8iq4l0y" path="res://unit.tscn" id="6_0qxrm"]
+[ext_resource type="Resource" uid="uid://lbmolegycmpq" path="res://data/game_data/character_data/black_mage.tres" id="7_8r7ii"]
+[ext_resource type="Resource" uid="uid://bxsx5g3qdln6n" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_animation_set.tres" id="8_dkakg"]
+[ext_resource type="Resource" uid="uid://dxj3uve0hes2y" path="res://data/game_data/character_data/warrior.tres" id="8_of7j8"]
+[ext_resource type="Resource" uid="uid://5ftkenvelip4" path="res://data/game_data/animations/battle_animation/warrior_animations/warrior_animation_set.tres" id="9_dkakg"]
+[ext_resource type="Resource" uid="uid://cdgrn4m1rkmaa" path="res://data/game_data/character_data/base_enemy.tres" id="11_4jw7k"]
+[ext_resource type="PackedScene" uid="uid://b7xxaqs5jvvbm" path="res://scenes/UI/battle_hud/battle_hud.tscn" id="11_e2rkv"]
+[ext_resource type="Resource" uid="uid://dxe7vc51wswbg" path="res://data/game_data/animations/battle_animation/brigant_battle_animations/brigant_battle_animation_set.tres" id="12_1net8"]
+
+[node name="BattleScene" type="Node2D"]
+script = ExtResource("1_dkakg")
+left_origin = Vector2(-160, 100)
+left_step = Vector2(18, -40)
+right_origin = Vector2(160, 100)
+right_step = Vector2(-18, -40)
+
+[node name="LimboHSM" type="LimboHSM" parent="."]
+
+[node name="SelectTargetState" type="LimboState" parent="LimboHSM"]
+
+[node name="ExecuteActionState" type="LimboState" parent="LimboHSM"]
+
+[node name="SelectActionState" type="LimboState" parent="LimboHSM"]
+
+[node name="TurnManager" type="Node" parent="."]
+script = ExtResource("2_e2rkv")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("3_4jw7k")
+script = ExtResource("4_1net8")
+camera_path = NodePath("../Camera2D")
+
+[node name="TurnIndicator" parent="." instance=ExtResource("5_sw16a")]
+follow_offset = Vector2(0, -30)
+smooth_speed = 0.0
+
+[node name="Formations" type="Node2D" parent="."]
+
+[node name="FormationPlayerParty" type="Node2D" parent="Formations"]
+unique_name_in_owner = true
+
+[node name="Marker2D" type="Marker2D" parent="Formations/FormationPlayerParty"]
+metadata/_edit_group_ = true
+
+[node name="Unit" parent="Formations/FormationPlayerParty/Marker2D" instance=ExtResource("6_0qxrm")]
+character_data = ExtResource("7_8r7ii")
+anim_set = ExtResource("8_dkakg")
+
+[node name="Marker2D2" type="Marker2D" parent="Formations/FormationPlayerParty"]
+
+[node name="Unit" parent="Formations/FormationPlayerParty/Marker2D2" instance=ExtResource("6_0qxrm")]
+character_data = ExtResource("8_of7j8")
+anim_set = ExtResource("9_dkakg")
+
+[node name="Marker2D3" type="Marker2D" parent="Formations/FormationPlayerParty"]
+
+[node name="Unit" parent="Formations/FormationPlayerParty/Marker2D3" instance=ExtResource("6_0qxrm")]
+character_data = ExtResource("7_8r7ii")
+anim_set = ExtResource("8_dkakg")
+
+[node name="Marker2D4" type="Marker2D" parent="Formations/FormationPlayerParty"]
+
+[node name="Unit" parent="Formations/FormationPlayerParty/Marker2D4" instance=ExtResource("6_0qxrm")]
+character_data = ExtResource("7_8r7ii")
+anim_set = ExtResource("8_dkakg")
+
+[node name="FormationEnemyParty" type="Node2D" parent="Formations"]
+unique_name_in_owner = true
+
+[node name="Marker2D" type="Marker2D" parent="Formations/FormationEnemyParty"]
+
+[node name="Unit" parent="Formations/FormationEnemyParty/Marker2D" instance=ExtResource("6_0qxrm")]
+character_data = ExtResource("11_4jw7k")
+anim_set = ExtResource("12_1net8")
+
+[node name="Marker2D2" type="Marker2D" parent="Formations/FormationEnemyParty"]
+
+[node name="Unit" parent="Formations/FormationEnemyParty/Marker2D2" instance=ExtResource("6_0qxrm")]
+character_data = ExtResource("11_4jw7k")
+anim_set = ExtResource("12_1net8")
+
+[node name="Marker2D3" type="Marker2D" parent="Formations/FormationEnemyParty"]
+
+[node name="Unit" parent="Formations/FormationEnemyParty/Marker2D3" instance=ExtResource("6_0qxrm")]
+character_data = ExtResource("11_4jw7k")
+anim_set = ExtResource("12_1net8")
+
+[node name="Marker2D4" type="Marker2D" parent="Formations/FormationEnemyParty"]
+
+[node name="Unit" parent="Formations/FormationEnemyParty/Marker2D4" instance=ExtResource("6_0qxrm")]
+character_data = ExtResource("11_4jw7k")
+anim_set = ExtResource("12_1net8")
+
+[node name="VFX" type="Node2D" parent="."]
+
+[node name="BattleHUD" parent="." instance=ExtResource("11_e2rkv")]
+unique_name_in_owner = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
+
+[connection signal="start_battle" from="BattleHUD" to="." method="_on_ui_start_battle"]

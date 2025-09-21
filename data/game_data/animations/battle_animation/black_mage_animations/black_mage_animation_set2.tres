@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="AnimSetData" load_steps=4 format=3 uid="uid://brlllob65dk34"]
+
+[ext_resource type="AnimationLibrary" uid="uid://b1ixixumpyold" path="res://data/anims/character_battle_animation.res" id="1_3exjq"]
+[ext_resource type="Script" uid="uid://cflm4cr17v5gx" path="res://data/scripts/anim_set_data.gd" id="2_2rbpf"]
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="3_2rbpf"]
+
+[resource]
+script = ExtResource("2_2rbpf")
+animLibrary_name = &"character_battle_animation"
+animlibrary = ExtResource("1_3exjq")
+metadata/_custom_type_script = "uid://cflm4cr17v5gx"

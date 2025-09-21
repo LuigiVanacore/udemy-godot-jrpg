@@ -1,0 +1,121 @@
+[gd_scene load_steps=6 format=3 uid="uid://cgth8le8edgoi"]
+
+[ext_resource type="Texture2D" uid="uid://bxy8wpfqvtb4h" path="res://assets/battle/GUI/gui_9Slices.png" id="1_6e7eg"]
+[ext_resource type="Script" uid="uid://bvqwk0ojune5d" path="res://scenes/UI/character_status_card/character_status_card.gd" id="1_ocw1s"]
+[ext_resource type="Texture2D" uid="uid://b56k2gpaswg7w" path="res://assets/battle/GUI/gui_emptyBar.png" id="1_wai78"]
+[ext_resource type="Texture2D" uid="uid://d35ks2owjmw3p" path="res://assets/battle/GUI/gui_HPBar.png" id="2_6e7eg"]
+[ext_resource type="Texture2D" uid="uid://bcoeayeu3c4qs" path="res://assets/battle/GUI/gui_MPBar.png" id="3_ocw1s"]
+
+[node name="CharacterStatusCard" type="Control"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1136.0
+offset_bottom = -640.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ocw1s")
+
+[node name="Panel" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_6e7eg")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NameLv" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/NameLv"]
+layout_mode = 2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/NameLv/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "[Name]"
+
+[node name="LvLabel" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/NameLv/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "[Level]                 "
+
+[node name="LvAndState" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/NameLv"]
+layout_mode = 2
+
+[node name="StatusIcons" type="HBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainer/NameLv/LvAndState"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Bars" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Bars"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Bars/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Hp:"
+
+[node name="HpBar" type="TextureProgressBar" parent="MarginContainer/VBoxContainer/Bars/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+value = 44.0
+stretch_margin_top = 6
+stretch_margin_bottom = 6
+texture_under = ExtResource("1_wai78")
+texture_progress = ExtResource("2_6e7eg")
+texture_progress_offset = Vector2(6, 4)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Bars"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Bars/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "Mp:"
+
+[node name="MpBar" type="TextureProgressBar" parent="MarginContainer/VBoxContainer/Bars/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+value = 55.0
+texture_under = ExtResource("1_wai78")
+texture_progress = ExtResource("3_ocw1s")
+texture_progress_offset = Vector2(6, 4)

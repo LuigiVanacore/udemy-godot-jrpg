@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="AnimSetData" load_steps=15 format=3 uid="uid://bxsx5g3qdln6n"]
+
+[ext_resource type="AnimationLibrary" path="res://data/game_data/animations/battle_animation/character_battle_animation.tres" id="1_whyfk"]
+[ext_resource type="Script" uid="uid://cflm4cr17v5gx" path="res://data/scripts/anim_set_data.gd" id="2_c1xsm"]
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="3_hdfj1"]
+[ext_resource type="Resource" uid="uid://vkaw4lvov5vf" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_idle.tres" id="4_7tbd3"]
+[ext_resource type="Resource" uid="uid://dcy283tv2vtus" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_block.tres" id="5_c1xsm"]
+[ext_resource type="Resource" uid="uid://bdj0lgrn84fbi" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_damage.tres" id="6_pdjnk"]
+[ext_resource type="Resource" uid="uid://dunhj1ds5ngxx" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_dodge.tres" id="7_1g15n"]
+[ext_resource type="Resource" uid="uid://voukpwg3m4ef" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_gun_attack.tres" id="8_o74jd"]
+[ext_resource type="Resource" uid="uid://c4fm1fx0baeje" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_item.tres" id="9_1qc8x"]
+[ext_resource type="Resource" uid="uid://cjaa6ggxorqme" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_moving_forward.tres" id="10_28j7u"]
+[ext_resource type="Resource" uid="uid://r50w7sv1ro3w" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_pierce_attack.tres" id="11_h5tra"]
+[ext_resource type="Resource" uid="uid://clkvxw27p3b00" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_punch_attack.tres" id="12_hikt2"]
+[ext_resource type="Resource" uid="uid://c1grqrhxn652v" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_slash_attack.tres" id="13_ilsyf"]
+[ext_resource type="Resource" uid="uid://c2kypj11t8ahr" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_weak.tres" id="14_70mbu"]
+
+[resource]
+script = ExtResource("2_c1xsm")
+animLibrary_name = &"character_battle_animation"
+animlibrary = ExtResource("1_whyfk")
+tex_map = Array[ExtResource("3_hdfj1")]([ExtResource("4_7tbd3"), ExtResource("5_c1xsm"), ExtResource("6_pdjnk"), ExtResource("7_1g15n"), ExtResource("8_o74jd"), ExtResource("9_1qc8x"), ExtResource("10_28j7u"), ExtResource("11_h5tra"), ExtResource("12_hikt2"), ExtResource("13_ilsyf"), ExtResource("14_70mbu")])
+metadata/_custom_type_script = "uid://cflm4cr17v5gx"

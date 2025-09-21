@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="AnimSetData" load_steps=10 format=3 uid="uid://dxe7vc51wswbg"]
+
+[ext_resource type="Script" uid="uid://cflm4cr17v5gx" path="res://data/scripts/anim_set_data.gd" id="1_bh1qo"]
+[ext_resource type="AnimationLibrary" path="res://data/game_data/animations/battle_animation/character_battle_animation.tres" id="1_j1jx0"]
+[ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="2_tmtqt"]
+[ext_resource type="Resource" uid="uid://diku3oj87po3p" path="res://data/game_data/animations/battle_animation/brigant_battle_animations/brigant_atttack.tres" id="4_tufao"]
+[ext_resource type="Resource" uid="uid://nuc7e8vatwtp" path="res://data/game_data/animations/battle_animation/brigant_battle_animations/brigant_damage.tres" id="5_k1o1v"]
+[ext_resource type="Resource" uid="uid://duwuxwaussnp3" path="res://data/game_data/animations/battle_animation/brigant_battle_animations/brigant_dead.tres" id="6_m8hvb"]
+[ext_resource type="Resource" uid="uid://dqh8amt6wwuvm" path="res://data/game_data/animations/battle_animation/brigant_battle_animations/brigant_idle.tres" id="7_cju1v"]
+[ext_resource type="Resource" uid="uid://dv2porx4glvkb" path="res://data/game_data/animations/battle_animation/brigant_battle_animations/brigant_item.tres" id="8_c1cyx"]
+[ext_resource type="Resource" uid="uid://cdlfl8il4sbv3" path="res://data/game_data/animations/battle_animation/brigant_battle_animations/brigant_weak.tres" id="9_bq3ul"]
+
+[resource]
+script = ExtResource("1_bh1qo")
+animLibrary_name = &"character_battle_animation"
+animlibrary = ExtResource("1_j1jx0")
+tex_map = Array[ExtResource("2_tmtqt")]([ExtResource("4_tufao"), ExtResource("5_k1o1v"), ExtResource("6_m8hvb"), ExtResource("7_cju1v"), ExtResource("8_c1cyx"), ExtResource("9_bq3ul")])
+metadata/_custom_type_script = "uid://cflm4cr17v5gx"
