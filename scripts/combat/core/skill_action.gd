@@ -12,45 +12,49 @@ func label() -> String: return _data.label
 func target_mode() -> int: return _data.target_mode
 
 func validate(state_before: Dictionary, payload: Dictionary) -> Array:
-	var errs := []
+	var errs: Array = []
 	if _data == null: errs.append("SkillData missing")
 	if not payload.has("caster_id"): errs.append("Missing caster_id")
 	if not payload.has("target_ids"): errs.append("Missing target_ids")
-	if errs.size() > 0: return errs
-
-	var units := state_before.get("units", {})
-	if not units.has(payload["caster_id"]): errs.append("Caster not found")
+	if not errs.is_empty(): return errs
+	if not state_before.has("units"): return ["State missing 'units'"]
+	var units: Dictionary = state_before["units"] as Dictionary
+	var caster_id: Variant = payload["caster_id"]
+	if not units.has(caster_id):
+		errs.append("Invalid caster_id")
 	else:
-		var caster := units[payload["caster_id"]]
-		if int(caster.get("mp", 0)) < int(_data.mp_cost):
+		var caster_snap: Dictionary = units.get(caster_id, {}) as Dictionary
+		if int(caster_snap.get("mp", 0)) < int(_data.mp_cost):
 			errs.append("Not enough MP")
-
-	var tids := payload["target_ids"]
-	if tids.size() == 0: errs.append("No targets selected")
-	# (Potresti validare anche che i target rispettino il target_mode)
 	return errs
 
-func execute(state_before: Dictionary, payload: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
-	var units := state_before["units"]
-	var caster := units[payload["caster_id"]]
-	var deltas := []
-	var log := []
+func execute(state_before: Dictionary, payload: Dictionary, _rng: RandomNumberGenerator) -> Dictionary:
+	var units: Dictionary = state_before["units"] as Dictionary
+	var caster_id: Variant = payload["caster_id"]
+	var caster: Dictionary = units.get(caster_id, {}) as Dictionary
+	var tids: Array = payload["target_ids"]
 
-	# paga MP
-	deltas.append({"id": payload["caster_id"], "mp": -int(_data.mp_cost)})
+	var deltas: Array = []
+	var _log: Array[String] = []
 
-	for tid in payload["target_ids"]:
-		if not units.has(tid): continue
-		var target := units[tid]
-		var scale := float(caster.get(str(_data.scaling_stat), 5))
-		var amount := int(round(scale * _data.power))
+	# Pay MP cost
+	if _data.mp_cost > 0:
+		deltas.append({"id": caster_id, "mp": -int(_data.mp_cost)})
+
+	for tid_any in tids:
+		if not units.has(tid_any):
+			continue
+		var target: Dictionary = units.get(tid_any, {}) as Dictionary
+		var scale: float = float(caster.get(str(_data.scaling_stat), 5))
+		var amount: int = int(round(scale * float(_data.power)))
 		if String(_data.effect_kind) == "damage":
-			amount = max(1, amount - int(target.get("def", 0)))  # semplice mitigazione
-			deltas.append({"id": tid, "hp": -amount})
-			log.append("%s usa %s su %s: %d danni" % [str(caster.get("name","?")), _data.label, str(target.get("name","?")), amount])
+			# Simple mitigation: MATK/MDEF vs ATK/DEF based on scaling stat name
+			var defence_key := "mdef" if String(_data.scaling_stat) == "matk" else "def"
+			amount = max(1, amount - int(target.get(defence_key, 0)))
+			deltas.append({"id": tid_any, "hp": -amount})
+			_log.append("%s usa %s su %s: %d danni" % [str(caster.get("name","?")), _data.label, str(target.get("name","?")), amount])
 		else:
-			deltas.append({"id": tid, "hp": +amount})
-			log.append("%s usa %s su %s: cura %d HP" % [str(caster.get("name","?")), _data.label, str(target.get("name","?")), amount])
+			deltas.append({"id": tid_any, "hp": amount})
+			_log.append("%s usa %s su %s: +%d HP" % [str(caster.get("name","?")), _data.label, str(target.get("name","?")), amount])
 
-	var state_after := ActionResolver.apply_deltas_to_state(state_before, deltas)
-	return {"ok": true, "deltas": deltas, "log": log, "state_after": state_after}
+	return {"ok": true, "deltas": deltas, "log": _log}

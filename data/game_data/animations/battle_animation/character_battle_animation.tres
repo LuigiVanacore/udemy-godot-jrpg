@@ -1,16 +1,16 @@
-[gd_resource type="AnimationLibrary" load_steps=24 format=3]
+[gd_resource type="AnimationLibrary" load_steps=24 format=3 uid="uid://c06o218yiwyfc"]
 
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/20250618occultist-block.png" id="1_n56mu"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/20250618occultist-damage.png" id="2_8b5ti"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/20250618occultist-dead.png" id="3_jvjbw"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/bchar_mage00-dodge.png" id="4_4mmlr"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/20250618occultist-gunAttack.png" id="5_nc4kx"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/bchar_mage00-idle.png" id="6_gon71"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/20250618occultist-item.png" id="7_38lw5"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/bchar_mage00-movingForward.png" id="8_pmy5f"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/20250618occultist-pierceAttack.png" id="9_qyq7x"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/20250618occultist-punchAttack.png" id="10_boagq"]
-[ext_resource type="Texture2D" path="res://assets/battle/battleChars/20250618occultist-slashAttack.png" id="11_5xbo6"]
+[ext_resource type="Texture2D" uid="uid://dgtxmmknobk2v" path="res://assets/battle/battleChars/20250618occultist-block.png" id="1_n56mu"]
+[ext_resource type="Texture2D" uid="uid://dp3538jgfvgi4" path="res://assets/battle/battleChars/20250618occultist-damage.png" id="2_8b5ti"]
+[ext_resource type="Texture2D" uid="uid://3w4rgyohro2f" path="res://assets/battle/battleChars/20250618occultist-dead.png" id="3_jvjbw"]
+[ext_resource type="Texture2D" uid="uid://bowfbfvwwhqsp" path="res://assets/battle/battleChars/bchar_mage00-dodge.png" id="4_4mmlr"]
+[ext_resource type="Texture2D" uid="uid://cn3cut3vy8g8y" path="res://assets/battle/battleChars/20250618occultist-gunAttack.png" id="5_nc4kx"]
+[ext_resource type="Texture2D" uid="uid://so4ob7dnjndn" path="res://assets/battle/battleChars/bchar_mage00-idle.png" id="6_gon71"]
+[ext_resource type="Texture2D" uid="uid://b3jslxaie6wv5" path="res://assets/battle/battleChars/20250618occultist-item.png" id="7_38lw5"]
+[ext_resource type="Texture2D" uid="uid://cgwusrfjwns11" path="res://assets/battle/battleChars/bchar_mage00-movingForward.png" id="8_pmy5f"]
+[ext_resource type="Texture2D" uid="uid://bafwld12d4l77" path="res://assets/battle/battleChars/20250618occultist-pierceAttack.png" id="9_qyq7x"]
+[ext_resource type="Texture2D" uid="uid://bvx1fb7a4bs7h" path="res://assets/battle/battleChars/20250618occultist-punchAttack.png" id="10_boagq"]
+[ext_resource type="Texture2D" uid="uid://cwqvb02a47dvy" path="res://assets/battle/battleChars/20250618occultist-slashAttack.png" id="11_5xbo6"]
 
 [sub_resource type="Animation" id="Animation_m5xmj"]
 resource_name = "block"
@@ -116,6 +116,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Pivot/Body:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.6045826),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.9270836, 0, 0.093911745, 1), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_n8tdw"]
@@ -541,6 +553,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_6dhph"]
 resource_name = "slashAttack"
+length = 2.0
 step = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -589,6 +602,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Pivot:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.4, 2),
+"transitions": PackedFloat32Array(4.924575, 50, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(30, 0), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_n7ug7"]

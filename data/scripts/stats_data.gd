@@ -2,27 +2,27 @@ class_name StatsData
 extends Resource
 
 @export_category("Vitals")
-@export var HP      : float = 0.0     # di solito lasci 0: l'HP corrente sta in StatsInstance
-@export var HP_MAX  : float = 100.0
-@export var MP      : float = 0.0     # idem come HP
-@export var MP_MAX  : float = 30.0
+@export var HP      : int = 0     # di solito lasci 0: l'HP corrente sta in StatsInstance
+@export var HP_MAX  : int = 100
+@export var MP      : int = 0    # idem come HP
+@export var MP_MAX  : int = 30
 
 @export_category("Offense / Defense")
-@export var ATK     : float = 10.0
-@export var DEF     : float = 5.0
-@export var MATK    : float = 0.0
-@export var MDEF    : float = 0.0
+@export var ATK     : int = 10
+@export var DEF     : int = 5
+@export var MATK    : int = 0
+@export var MDEF    : int = 0
 
 @export_category("Accuracy / Dodge / Crit")
-@export var ACC        : float = 0.95  # es. 95% base
-@export var EVA        : float = 0.05  # es. 5% base
-@export var CRIT_RATE  : float = 0.05  # 5% = 0.05
-@export var CRIT_DMG   : float = 1.5   # 150% = 1.5
+@export var ACC        : int = 95  # es. 95% base
+@export var EVA        : int = 5  # es. 5% base
+@export var CRIT_RATE  : int = 5  # 5% = 0.05
+@export var CRIT_DMG   : int = 150   # 150% = 1.5
 
 @export_category("Other")
-@export var SPEED   : float = 100.0
+@export var SPEED   : int = 100
 
-func get_base(stat: StatsIds.Stat) -> float:
+func get_base(stat: StatsIds.Stat) -> int:
 	match stat:
 		StatsIds.Stat.HP:         return HP
 		StatsIds.Stat.HP_MAX:     return HP_MAX
@@ -37,9 +37,9 @@ func get_base(stat: StatsIds.Stat) -> float:
 		StatsIds.Stat.CRIT_RATE:  return CRIT_RATE
 		StatsIds.Stat.CRIT_DMG:   return CRIT_DMG
 		StatsIds.Stat.SPEED:      return SPEED
-		_:                        return 0.0
+		_:                        return 0
 
-func set_base(stat: StatsIds.Stat, v: float) -> void:
+func set_base(stat: StatsIds.Stat, v: int) -> void:
 	match stat:
 		StatsIds.Stat.HP:         HP = v
 		StatsIds.Stat.HP_MAX:     HP_MAX = v

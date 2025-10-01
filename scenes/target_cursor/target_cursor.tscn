@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcqfjgitjcvdb"]
+
+[ext_resource type="Script" uid="uid://c70nfw2vr1v2m" path="res://scenes/target_cursor/target_cursor.gd" id="1_sbwsp"]
+[ext_resource type="SpriteFrames" uid="uid://cta7vmt3h5651" path="res://scenes/UI/ui_cursor/cursor_animated.tres" id="2_leye7"]
+
+[node name="TargetCursor" type="Node2D"]
+z_index = 100
+z_as_relative = false
+script = ExtResource("1_sbwsp")
+position_right_side = Vector2(-27, -8)
+position_left_side = Vector2(-1, -8)
+
+[node name="Pivot" type="Marker2D" parent="."]
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="Pivot"]
+position = Vector2(-27, -8)
+sprite_frames = ExtResource("2_leye7")
+autoplay = "default"
+frame = 5
+frame_progress = 0.6797527
+centered = false

@@ -2,21 +2,21 @@
 class_name StatsInstance
 extends Resource
 
-signal stat_changed(stat: int, old_value: float, new_value: float)
-signal hp_changed(old_value: float, new_value: float)
-signal mp_changed(old_value: float, new_value: float)
+signal stat_changed(stat: int, old_value: int, new_value: int)
+signal hp_changed(old_value: int, new_value: int)
+signal mp_changed(old_value: int, new_value: int)
 
 @export var base: StatsData
 
 var _mods: Array = []                         # Array di StatModifierData (no tipizzazione annidata per sicurezza)
-var _cache: PackedFloat32Array                # cache dei totali
+var _cache: PackedInt32Array                # cache dei totali
 var _dirty: bool = true
 
-var current_hp: float = 0.0
-var current_mp: float = 0.0
+var current_hp: int = 0
+var current_mp: int = 0
 
 func _init() -> void:
-	_cache = PackedFloat32Array()
+	_cache = PackedInt32Array()
 	_cache.resize(StatsIds.COUNT)
 
 # ---- API PRINCIPALE ----
@@ -25,15 +25,15 @@ func init_current_full() -> void:
 	current_hp = total(StatsIds.Stat.HP_MAX)
 	current_mp = total(StatsIds.Stat.MP_MAX)
 
-func total(stat: StatsIds.Stat) -> float:
+func total(stat: StatsIds.Stat) -> int:
 	if _dirty:
 		_recalc_all()
 	return _cache[stat]
 
-func get_base(stat: StatsIds.Stat) -> float:
-	return base.get_base(stat) if base != null else 0.0
+func get_base(stat: StatsIds.Stat) -> int:
+	return base.get_base(stat) if base != null else 0
 
-func set_base(stat: StatsIds.Stat, v: float) -> void:
+func set_base(stat: StatsIds.Stat, v: int) -> void:
 	if base == null:
 		base = StatsData.new()
 	base.set_base(stat, v)
@@ -68,16 +68,16 @@ func clear_modifiers() -> void:
  
 
 # ---- HP / MP correnti ----
-func apply_damage(amount: float) -> float:
-	if amount <= 0.0: return 0.0
+func apply_damage(amount: int) -> int:
+	if amount <= 0 : return 0
 	var old := current_hp
-	current_hp = max(0.0, current_hp - amount)
+	current_hp = max(0 , current_hp - amount)
 	if current_hp != old:
 		hp_changed.emit(old, current_hp)
 	return old - current_hp
 
-func heal(amount: float) -> float:
-	if amount <= 0.0: return 0.0
+func heal(amount: int) -> int:
+	if amount <= 0 : return 0
 	var old := current_hp
 	var max_hp := total(StatsIds.Stat.HP_MAX)
 	current_hp = min(max_hp, current_hp + amount)
@@ -85,16 +85,16 @@ func heal(amount: float) -> float:
 		hp_changed.emit(old, current_hp)
 	return current_hp - old
 
-func spend_mp(amount: float) -> bool:
-	if amount <= 0.0: return true
+func spend_mp(amount: int) -> bool:
+	if amount <= 0 : return true
 	if current_mp < amount: return false
 	var old := current_mp
 	current_mp -= amount
 	mp_changed.emit(old, current_mp)
 	return true
 
-func restore_mp(amount: float) -> float:
-	if amount <= 0.0: return 0.0
+func restore_mp(amount: int) -> int:
+	if amount <= 0 : return 0
 	var old := current_mp
 	var max_mp := total(StatsIds.Stat.MP_MAX)
 	current_mp = min(max_mp, current_mp + amount)
@@ -115,13 +115,13 @@ func _recalc_all() -> void:
 
 	# 1) base
 	for s in StatsIds.COUNT:
-		_cache[s] = base.get_base(s) if base != null else 0.0
+		_cache[s] = base.get_base(s) if base != null else 0
 
 	# 2) applica modificatori in ordine: ADD -> MUL -> FINAL_MUL -> OVERRIDE
 	#    (classico JRPG: additivi, poi moltiplicatori, poi moltiplicatori finali, eventuali override)
-	var add := PackedFloat32Array();      add.resize(StatsIds.COUNT)
-	var mul := PackedFloat32Array();      mul.resize(StatsIds.COUNT)     # accoglie somme di fattori (1+v) - 1
-	var fmul := PackedFloat32Array();     fmul.resize(StatsIds.COUNT)
+	var add := PackedInt32Array();      add.resize(StatsIds.COUNT)
+	var mul := PackedInt32Array();      mul.resize(StatsIds.COUNT)     # accoglie somme di fattori (1+v) - 1
+	var fmul := PackedInt32Array();     fmul.resize(StatsIds.COUNT)
 	var ovrd := Dictionary()  # stat(int) -> float
 
 	for i in _mods.size():
@@ -135,18 +135,18 @@ func _recalc_all() -> void:
 	for s in StatsIds.COUNT:
 		var v := _cache[s]
 		v = v + add[s]
-		v = v * (1.0 + mul[s])
-		v = v * (1.0 + fmul[s])
+		v = v * (1 + mul[s])
+		v = v * (1 + fmul[s])
 		if ovrd.has(s):
 			v = float(ovrd[s])
 
 		# Clamp “ragionevoli” per tassi
 		if s == StatsIds.Stat.CRIT_RATE:
-			v = clamp(v, 0.0, 1.0) # 0%..100%
+			v = clamp(v, 0, 1) # 0%..100%
 		if s == StatsIds.Stat.EVA:
-			v = max(0.0, v)
+			v = max(0, v)
 		if s == StatsIds.Stat.ACC:
-			v = max(0.0, v)
+			v = max(0, v)
 
 		_cache[s] = v
 

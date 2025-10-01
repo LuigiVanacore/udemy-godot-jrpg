@@ -1,152 +1,225 @@
-# res://battle/TurnOrderService.gd
 class_name TurnManager
 extends Node
 
-enum Side { PLAYER, ENEMY }
+signal round_started(round_index: int, order: Array)               # Array[Unit] all'inizio round (live)
+signal order_changed(round_index: int, order: Array)               # Array[Unit] rimanenti (preview live)
+signal next_round_preview_changed(next_round_index: int, order: Array) # Array[Unit] preview del round successivo (live)
 
-signal round_started(round_index: int, order: Array)   # Array di Node (solo la vista dei battler)
-signal turn_started(actor: Unit)
-signal turn_ended(actor: Unit)
+signal turn_started(unit : Unit, round_index: int, turn_index: int)
+signal turn_ended(unit : Unit, round_index: int, turn_index: int)
 
-@export var randomize_same_side_ties: bool = false  # se false → usa slot_index per pari-speed stesso lato
-
-# ----------------------
-#  Token per l'ordine
-# ----------------------
-class TurnToken:
-	var unit: Unit
-	var side: TurnManager.Side
-	var base_speed: float
-	var slot_index: int = 0
-	var alive: bool = true
-	var tie_roll: int = 0  # usato se randomize_same_side_ties = true
-
-	func _init(n: Unit, s: TurnManager.Side, spd: float, slot: int) -> void:
-		unit = n
-		side = s
-		base_speed = max(0.0, spd)
-		slot_index = slot
-
-# ----------------------
-#  Stato
-# ----------------------
-var _units: Array[TurnToken] = []
-var _order: Array[TurnToken] = []
-var _ix: int = -1
+var _turn_order: Array[Unit] = []
+var _active: Unit = null
 var _round: int = 0
-var _active: TurnToken = null
+var _turn_index: int = -1
+var _acted: Dictionary = {}                 # set: unit -> true (ha già agito nel round)
 
-# ----------------------
-#  API
-# ----------------------
-func register_battler(unit: Unit, side: TurnManager.Side, speed: float, slot_index: int = 0) -> void:
-	var t := TurnToken.new(unit, side, speed, slot_index)
-	_units.append(t)
+# cleanup segnali
+var _death_handlers: Dictionary = {}        # unit -> Callable
+var _exit_handlers: Dictionary = {}         # unit -> Callable
+var auto_advance_on_active_death := false
 
-func set_alive(unit: Unit, alive: bool) -> void:
-	for i in _units.size():
-		if _units[i].unit == unit:
-			_units[i].alive = alive
-			break
+# -----------------------------------------------------------------------------
+# REGISTRAZIONE
+# -----------------------------------------------------------------------------
+func register_unit(unit: Unit) -> void:
+	if _turn_order.has(unit):
+		_connect_unit_signals(unit)
+		return
+	_turn_order.append(unit)
+	_connect_unit_signals(unit)
+	# aggiornare preview al volo può essere utile in setup dinamici
+	_emit_remaining_order_changed()
+	_emit_next_round_preview_changed()
 
-func refresh_speed_from_node(unit: Unit, new_speed: float) -> void:
-	# usa questa se cambi la speed a runtime
-	for i in _units.size():
-		if _units[i].unit == unit:
-			_units[i].base_speed = max(0.0, new_speed)
-			break
+func unregister_unit(unit: Unit) -> void:
+	_disconnect_unit_signals(unit)
+	var index := _turn_order.find(unit)
+	if index != -1:
+		_turn_order.remove_at(index)
 
+	if _active == unit:
+		emit_signal("turn_ended", unit, _round, max(_turn_index, 0))
+		_active = null
+
+	_acted.erase(unit)
+
+	_emit_remaining_order_changed()
+	_emit_next_round_preview_changed()
+
+# -----------------------------------------------------------------------------
+# CICLO BATTAGLIA
+# -----------------------------------------------------------------------------
 func start_battle() -> void:
 	_round = 0
 	_start_new_round()
 
-func current_actor() -> Unit:
-	return _active.unit if _active != null else null
+# Sceglie la prossima unit (speed live) e la ritorna.
+func start_turn() -> Unit:
+	var candidates := _get_candidates_remaining()
+	if candidates.is_empty():
+		_start_new_round()
+		candidates = _get_candidates_remaining()
+		if candidates.is_empty():
+			return null
 
-func preview_next(n: int = 8) -> Array:
-	# Ritorna i prossimi N attori (Node) a partire dal turno corrente (senza mutare lo stato).
-	var out: Array = []
-	if _order.is_empty():
-		return out
-	var idx : int = max(0, _ix)
-	while out.size() < n:
-		idx += 1
-		if idx >= _order.size():
-			# simuliamo il prossimo round con la stessa fotografia (NB: se dinamico, chiama _build_order() esterno)
-			idx = 0
-		out.append(_order[idx].unit)
-	return out
+	candidates.sort_custom(_cmp_turn_order_live)
 
-func end_turn(actor: Node2D) -> void:
-	# Chiama questa quando l'azione (giocatore o IA) è completamente risolta
-	if _active == null or _active.unit != actor:
-		return
-	var ended := _active
+	_turn_index += 1
+	_active = candidates[0]
+	emit_signal("turn_started", _active, _round, _turn_index)
+
+	# Preview dei restanti (dopo l’attivo) + preview round successivo
+	_emit_remaining_order_changed(true)
+	_emit_next_round_preview_changed()
+	return _active
+
+func end_turn() -> void:
+	if _active != null and is_instance_valid(_active):
+		_acted[_active] = true
+		emit_signal("turn_ended", _active, _round, _turn_index)
 	_active = null
-	emit_signal("turn_ended", ended.unit)
-	_advance_turn()
+	# Aggiorna entrambe le preview
+	_emit_remaining_order_changed()
+	_emit_next_round_preview_changed()
 
-# ----------------------
-#  Internals
-# ----------------------
+func current_active_unit() -> Unit:
+	return _active
+
+# Chiamala quando un buff/debuff modifica speed (per aggiornare subito la UI)
+func notify_speed_changed(_unit: Node = null) -> void:
+	_emit_remaining_order_changed()
+	_emit_next_round_preview_changed()
+
+# Preview rimanenti del round corrente (live), esclude chi ha già agito e l’eventuale attivo
+func get_remaining_order_preview() -> Array:
+	var arr := _get_candidates_remaining()
+	if _active != null:
+		arr.erase(_active)
+	arr.sort_custom(Callable(self, "_cmp_turn_order_live"))
+	return arr
+
+# Preview del PROSSIMO round (live): include tutte le unit vive, ignorando `_acted`
+func get_next_round_order_preview() -> Array:
+	var arr: Array[Unit] = []
+	for unit in _turn_order:
+		if is_instance_valid(unit) and unit.is_alive():
+			arr.append(unit)
+	arr.sort_custom(Callable(self, "_cmp_turn_order_live"))
+	return arr
+
+# (Comodo) Timeline di due righe: corrente + prossimo
+func get_two_round_timeline() -> Dictionary:
+	return {
+		"current": get_remaining_order_preview(),
+		"next": get_next_round_order_preview(),
+	}
+
+# -----------------------------------------------------------------------------
+# INTERNO
+# -----------------------------------------------------------------------------
 func _start_new_round() -> void:
 	_round += 1
-	_build_order()
-	_ix = -1
-	emit_signal("round_started", _round, _order.map(func(t): return t.unit))
-	_advance_turn()  # parte il primo turno
+	_turn_index = -1
+	_acted.clear()
 
-func _advance_turn() -> void:
-	# trova il prossimo vivo; se finita la lista → nuovo round
-	var tries := 0
-	while tries < _order.size():
-		_ix += 1
-		if _ix >= _order.size():
-			_start_new_round()
-			return
-		var t := _order[_ix]
-		if t.alive and is_instance_valid(t.unit):
-			_active = t
-			emit_signal("turn_started", t.unit)
-			return
-		tries += 1
-	# nessuno disponibile (battaglia finita?)
-	_active = null
+	# Ordine iniziale del nuovo round (live) per UI
+	var all_alive: Array[Unit] = []
+	for unit in _turn_order:
+		if is_instance_valid(unit) and unit.is_alive():
+			all_alive.append(unit)
+	all_alive.sort_custom(_cmp_turn_order_live)
+	emit_signal("round_started", _round, all_alive)
 
-func _effective_speed(t: TurnToken) -> float:
-	# Se il nodo espone get_battle_speed(), usalo; altrimenti base_speed
-	if is_instance_valid(t.unit) and t.unit.has_method("get_battle_speed"):
-		var v = t.unit.call("get_battle_speed")
-		return float(v)
-	return t.base_speed
+	# All'inizio round: rimanenti == all_alive
+	emit_signal("order_changed", _round, all_alive)
+	# E anche il preview del round SUCCESSIVO (che in pratica coincide con "se partisse adesso")
+	_emit_next_round_preview_changed()
 
-func _build_order() -> void:
-	# prepara tie-roll se richiesto
-	if randomize_same_side_ties:
-		for i in _units.size():
-			_units[i].tie_roll = randi() % 100000
+func _emit_remaining_order_changed(exclude_active := false) -> void:
+	var arr := _get_candidates_remaining()
+	if exclude_active and _active != null:
+		arr.erase(_active)
+	arr.sort_custom(_cmp_turn_order_live)
+	emit_signal("order_changed", _round, arr)
 
-	# snapshot vivi
-	var alive_list: Array[TurnToken] = []
-	for t in _units:
-		if t.alive and is_instance_valid(t.unit):
-			alive_list.append(t)
+func _emit_next_round_preview_changed() -> void:
+	var next := get_next_round_order_preview()
+	emit_signal("next_round_preview_changed", _round + 1, next)
 
-	# ordina: speed desc, PLAYER prima di ENEMY a pari speed, poi slot_index (o tie_roll)
-	alive_list.sort_custom(Callable(self, "_less_token"))
-	_order = alive_list
+func _get_candidates_remaining() -> Array[Unit]:
+	var arr : Array[Unit] = []
+	for unit in _turn_order:
+		if is_instance_valid(unit) and unit.is_alive() and !_acted.has(unit):
+			arr.append(unit)
+	return arr
 
-func _less_token(a: TurnToken, b: TurnToken) -> bool:
-	var sa := _effective_speed(a)
-	var sb := _effective_speed(b)
-	if sa != sb:
-		return sa > sb  # speed più alta prima
-	# pari speed → PLAYER prima
-	var ap := a.side == Side.PLAYER
-	var bp := b.side == Side.PLAYER
-	if ap != bp:
-		return ap  # true se a è player (quindi prima)
-	# stesso lato → usa slot_index oppure tie_roll
-	if randomize_same_side_ties:
-		return a.tie_roll < b.tie_roll
-	return a.slot_index < b.slot_index
+# Ordinamento LIVE: speed desc, party first, poi instance_id asc (deterministico)
+func _cmp_turn_order_live(a: Unit, b: Unit) -> bool:
+	var speed_a := _read_speed(a)
+	var speed_b := _read_speed(b)
+	if speed_a != speed_b:
+		return speed_a > speed_b
+	var pa := a.is_party_member()
+	var pb := b.is_party_member()
+	if pa != pb:
+		return pa
+	return a.get_instance_id() < b.get_instance_id()
+
+# -----------------------------------------------------------------------------
+func _read_speed(unit: Unit) -> int:
+	return unit.get_stat(StatsIds.Stat.SPEED)
+
+# -----------------------------------------------------------------------------
+# HOOK MORTE / USCITA
+# -----------------------------------------------------------------------------
+func _connect_unit_signals(u: Node) -> void:
+	if !is_instance_valid(u): return
+
+	if !_death_handlers.has(u):
+		var death_cb := Callable(self, "_on_unit_died").bind(u)
+		if u.has_signal("unit_died"):
+			u.unit_died.connect(death_cb)
+			_death_handlers[u] = death_cb
+		elif u.has_signal("died"):
+			u.died.connect(death_cb)
+			_death_handlers[u] = death_cb
+
+	if !_exit_handlers.has(u):
+		var exit_cb := Callable(self, "_on_unit_tree_exiting").bind(u)
+		u.tree_exiting.connect(exit_cb)
+		_exit_handlers[u] = exit_cb
+
+	# opzionale: subscribe a cambi statistiche per aggiornare subito le preview
+	if u.has_signal("speed_changed"):
+		u.speed_changed.connect(Callable(self, "notify_speed_changed").bind(u))
+	elif u.has_signal("stats_changed"):
+		u.stats_changed.connect(Callable(self, "notify_speed_changed").bind(u))
+
+func _disconnect_unit_signals(u: Node) -> void:
+	if is_instance_valid(u):
+		if _death_handlers.has(u):
+			var cb: Callable = _death_handlers[u]
+			if u.has_signal("unit_died") and u.unit_died.is_connected(cb):
+				u.unit_died.disconnect(cb)
+			elif u.has_signal("died") and u.died.is_connected(cb):
+				u.died.disconnect(cb)
+		if _exit_handlers.has(u):
+			var cb2: Callable = _exit_handlers[u]
+			if u.tree_exiting.is_connected(cb2):
+				u.tree_exiting.disconnect(cb2)
+		if u.has_signal("speed_changed"):
+			var c := Callable(self, "notify_speed_changed").bind(u)
+			if u.speed_changed.is_connected(c): u.speed_changed.disconnect(c)
+		elif u.has_signal("stats_changed"):
+			var c2 := Callable(self, "notify_speed_changed").bind(u)
+			if u.stats_changed.is_connected(c2): u.stats_changed.disconnect(c2)
+
+	_death_handlers.erase(u)
+	_exit_handlers.erase(u)
+
+func _on_unit_died(u: Unit) -> void:
+	var was_active := (_active == u)
+	unregister_unit(u)
+	if was_active and auto_advance_on_active_death:
+		start_turn()
