@@ -40,7 +40,6 @@ var bb_action_to_execute : StringName = &"action_to_execute"
 @onready var action_manager : ActionManager = $ActionManager
 @onready var turn_indicator : TurnIndicator = $TurnIndicator
 @onready var battle_hud : BattleHUD = %BattleHUD
-@onready var battle_state_manager : BattleStateManager = %BattleStateManager
 
 func _ready() -> void:
 	
@@ -93,7 +92,9 @@ func _place_line(formation_node: Node2D, origin: Vector2, step: Vector2, face_le
 		_set_facing(node.get_child(0), face_left)
 
 func _set_facing(battler: Node2D, face_left: bool) -> void:
-	# 1) se il tuo BattlerView ha metodi dedicati:
+	if battler == null:
+		return
+		
 	if battler.has_method("face_left") and battler.has_method("face_right"):
 		if face_left:
 			battler.call("face_left")

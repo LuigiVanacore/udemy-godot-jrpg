@@ -22,7 +22,7 @@ extends Resource
 @export_category("Other")
 @export var SPEED   : int = 100
 
-func get_base(stat: StatsIds.Stat) -> int:
+func get_value(stat: StatsIds.Stat) -> int:
 	match stat:
 		StatsIds.Stat.HP:         return HP
 		StatsIds.Stat.HP_MAX:     return HP_MAX

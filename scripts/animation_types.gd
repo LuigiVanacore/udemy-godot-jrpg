@@ -1,0 +1,8 @@
+class_name AnimationTypes
+extends Node
+
+
+
+enum Types { IDLE, MOVING_FORWARD, ATTACK, ATTACK_SLASH, ATTACK_PIERCE, 
+			ATTACK_PUNCH, ATTACK_GUN, ITEM, DAMAGE,
+			 BLOCK, WEAK, DODGE, DEAD}

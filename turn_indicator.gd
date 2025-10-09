@@ -56,7 +56,7 @@ func clear_target() -> void:
 # -----------------------------
 func _anchor_pos_for(t: Unit) -> Vector2:
 	# Posizione base = centro del target
-	var p: Vector2 = t.global_position
+	var p: Vector2 = t.pivot.global_position
 
 	if auto_place_above_sprite and t.has_node("Sprite"):
 		var sprite := t.get_node("Sprite")

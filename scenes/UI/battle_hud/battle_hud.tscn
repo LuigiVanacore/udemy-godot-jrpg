@@ -17,54 +17,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Letterbox" type="Control" parent="PartyMenu"]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Control3" type="Control" parent="PartyMenu"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="PartyMenu/Control3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TopInfoBar" type="HBoxContainer" parent="PartyMenu/Control3/MarginContainer"]
-layout_mode = 2
-
-[node name="ObjectiveLabel" type="Label" parent="PartyMenu/Control3/MarginContainer/TopInfoBar"]
-layout_mode = 2
-
-[node name="BattleLogButton" type="Button" parent="PartyMenu/Control3/MarginContainer/TopInfoBar"]
-layout_mode = 2
-
-[node name="BattleLogPanel" type="Control" parent="PartyMenu"]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Panel" type="Panel" parent="PartyMenu/BattleLogPanel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="LogText" type="RichTextLabel" parent="PartyMenu/BattleLogPanel/Panel"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
 [node name="UI_CharacterStatusMenu" parent="PartyMenu" instance=ExtResource("2_gnohy")]
 unique_name_in_owner = true
 layout_mode = 1

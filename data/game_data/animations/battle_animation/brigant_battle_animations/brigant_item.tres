@@ -6,4 +6,5 @@
 [resource]
 script = ExtResource("1")
 id = &"item"
+anim_type = 7
 texture = ExtResource("2_inrds")

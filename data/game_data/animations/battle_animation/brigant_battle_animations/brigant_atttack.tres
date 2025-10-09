@@ -5,5 +5,6 @@
 
 [resource]
 script = ExtResource("1")
-id = &"atttack"
+id = &"attack"
+anim_type = 2
 texture = ExtResource("2_aud4s")

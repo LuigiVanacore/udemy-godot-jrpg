@@ -7,6 +7,4 @@
 script = ExtResource("1_gqn37")
 id = &"idle"
 texture = ExtResource("2_wkefv")
-hframes = 4
-vframes = 2
 metadata/_custom_type_script = "uid://cy4a34d0tda4r"

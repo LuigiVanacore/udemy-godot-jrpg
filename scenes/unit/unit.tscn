@@ -1,7 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://cemikp8iq4l0y"]
+[gd_scene load_steps=12 format=3 uid="uid://cemikp8iq4l0y"]
 
 [ext_resource type="Script" uid="uid://dwwjjtcypkcat" path="res://scenes/unit/unit.gd" id="1_l0n34"]
-[ext_resource type="Texture2D" uid="uid://cwqvb02a47dvy" path="res://assets/battle/battleChars/20250618occultist-slashAttack.png" id="3_1sk4h"]
 [ext_resource type="Script" uid="uid://b68i6p636jp2e" path="res://scenes/unit/idle_state.gd" id="3_of1k5"]
 [ext_resource type="PackedScene" uid="uid://502bbrd3bubs" path="res://scenes/UI/ui_unit_lifebar/ui_unit_life_bar.tscn" id="4_5wnup"]
 [ext_resource type="Script" uid="uid://qcndefvxj85a" path="res://scenes/unit/attack_state.gd" id="4_74e6i"]
@@ -10,9 +9,15 @@
 [ext_resource type="Script" uid="uid://ttcnj73yefrr" path="res://scenes/unit/dodge_state.gd" id="7_1ifho"]
 [ext_resource type="Script" uid="uid://ctt4fw5wwf18b" path="res://scenes/unit/weak_state.gd" id="8_u15f5"]
 [ext_resource type="Script" uid="uid://bs8uxf23gffee" path="res://scenes/unit/damage_state.gd" id="9_bg1qp"]
+[ext_resource type="Texture2D" uid="uid://dklupbx3va2cl" path="res://assets/battle/battleChars/20250618occultist-idle.png" id="10_5im7a"]
+[ext_resource type="Script" uid="uid://ct5cm3l060uia" path="res://scenes/unit/anim_manager.gd" id="12_1ifho"]
 
 [node name="Unit" type="Node2D"]
 script = ExtResource("1_l0n34")
+
+[node name="AnimationManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("12_1ifho")
 
 [node name="LimboHSM" type="LimboHSM" parent="."]
 
@@ -46,17 +51,15 @@ unique_name_in_owner = true
 [node name="Body" type="Sprite2D" parent="Pivot"]
 unique_name_in_owner = true
 scale = Vector2(2, 2)
-texture = ExtResource("3_1sk4h")
+texture = ExtResource("10_5im7a")
 hframes = 4
 vframes = 2
-frame = 4
 
 [node name="Weapon" type="Sprite2D" parent="Pivot"]
 unique_name_in_owner = true
 
 [node name="UI_UnitLifeBar" parent="Pivot" instance=ExtResource("4_5wnup")]
 unique_name_in_owner = true
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -70,7 +73,12 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 
 [node name="Anim" type="AnimationPlayer" parent="."]
+unique_name_in_owner = true
 
 [node name="TargetMarker" type="Marker2D" parent="."]
 unique_name_in_owner = true
 position = Vector2(30, 20)
+
+[node name="FloatingTextMarker" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -28)

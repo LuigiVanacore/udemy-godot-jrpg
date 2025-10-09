@@ -24,14 +24,12 @@ func start_battle():
 	for child : Unit in units:
 		_battle_scene.turn_manager.register_unit(child)
 		
-	build_initial_state(units)
+ 
 	
 	_battle_scene.turn_manager.start_battle()
 
 
-func build_initial_state(units : Array[Unit]) -> void:
-	_battle_scene.battle_state_manager.register_state(units)
-
+ 
 	
 #
 #func _build_inventories_for_party() -> Dictionary:

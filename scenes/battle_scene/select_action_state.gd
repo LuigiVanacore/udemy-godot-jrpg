@@ -10,7 +10,7 @@ func _setup() -> void:
 	_battle_scene.battle_hud.battle_action_selected.connect(_on_battle_hud_battle_action_selected)
 
 func _enter() -> void: 
-	pass
+	_battle_scene.battle_hud.select_battle_action.emit()
 
 func _update(_delta: float) -> void: 
 	pass

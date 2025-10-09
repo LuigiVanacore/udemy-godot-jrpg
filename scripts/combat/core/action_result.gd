@@ -15,11 +15,14 @@ func _init(_ok : bool, _hit : bool, _crit : bool, _deltas : Array[ActionDelta], 
 	self.deltas = _deltas
 	self.debug_log = _debug_log
 
-static func miss(log_line: String) -> ActionResult:
-	return ActionResult.new(true, false, false, [], log_line)
+static func miss() -> ActionResult:
+	return ActionResult.new(true, false, false, [], "miss")
 
 func is_ok()->bool:
 	return ok
+	
+func is_missed()->bool:
+	return not hit
 	
 func get_deltas()->Array[ActionDelta]:
 	return deltas

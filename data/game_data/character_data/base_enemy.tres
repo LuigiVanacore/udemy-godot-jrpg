@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=2 format=3 uid="uid://cdgrn4m1rkmaa"]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=3 format=3 uid="uid://cdgrn4m1rkmaa"]
 
 [ext_resource type="Script" uid="uid://c6w2ewaxrajls" path="res://data/scripts/character_data.gd" id="1_3jvlq"]
+[ext_resource type="Resource" uid="uid://b4ql675wkevtu" path="res://data/game_data/base_stats/enemy_base_stats.tres" id="1_xre7u"]
 
 [resource]
 script = ExtResource("1_3jvlq")
 character_name = &"base_enemy"
+base_stats = ExtResource("1_xre7u")
 metadata/_custom_type_script = "uid://c6w2ewaxrajls"

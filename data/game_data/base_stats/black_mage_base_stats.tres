@@ -4,7 +4,9 @@
 
 [resource]
 script = ExtResource("1_jfnv0")
+HP = 90
 HP_MAX = 90.0
+MP = 120
 MP_MAX = 120.0
 ATK = 4.0
 DEF = 6.0

@@ -6,4 +6,5 @@
 [resource]
 script = ExtResource("1")
 id = &"weak"
+anim_type = 10
 texture = ExtResource("2_ypexs")

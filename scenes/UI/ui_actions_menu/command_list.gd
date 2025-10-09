@@ -1,7 +1,8 @@
+class_name CommandList
 extends VBoxContainer
 
 
-signal action_selected(action)
+ 
 
 var is_disabled := false
 var _buttons: Array[TextureButton] = []
@@ -41,6 +42,8 @@ func _ready() -> void:
 
 
 # ---------- CURSORE ----------
+func set_cursor_visible(is_visible : bool):
+	_cursor.visible = is_visible
 
 
 func move_cursor_to_button(button: TextureButton) -> void:

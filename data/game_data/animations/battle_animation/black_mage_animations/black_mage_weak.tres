@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_8eear")
 id = &"weak"
+anim_type = 10
 texture = ExtResource("2_85a44")
 metadata/_custom_type_script = "uid://cy4a34d0tda4r"

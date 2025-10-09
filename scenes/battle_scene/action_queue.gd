@@ -8,69 +8,69 @@ signal queue_empty
  
 
 # Internal queue of {action: AbstractAction, payload: Dictionary, seed: int}
-var _queue: Array = []
-var _running: bool = false
-
-@onready var battle_state_manager : BattleStateManager = %BattleStateManager
-
-func enqueue(action: AbstractAction, payload: Dictionary, rng_seed: int = 0) -> void:
-	_queue.push_back({"action": action, "payload": payload, "seed": rng_seed})
-	if not _running:
-		_running = true
-		_process_queue()
-
-func _process_queue() -> void:
-	while not _queue.is_empty():
-		var item: Dictionary = _queue.pop_front()
-		var action: AbstractAction = item["action"]
-		var payload: Dictionary = item["payload"]
-		var seed: int = int(item.get("seed", 0))
-
-		# snapshot prima dell'azione (non modifichiamo l'originale)
-		var state_before: Dictionary = battle_state_manager.snapshot()
-
-		emit_signal("action_started", payload.get("caster_id"), action.id(), payload)
-
-		var res = ActionResolver.run(action, state_before, payload, seed)
-
-		# normalizza: accetta sia ActionResult che Dictionary
-		var ok := false
-		var deltas_arr: Array = []
-		var res_dict: Dictionary
-
-
-		ok = res.is_ok()
-		deltas_arr = _to_dict_deltas(res.get_deltas())
-		res_dict = res.to_dict()
-		
-
-		var state_after := state_before
-		if ok:
-			# 1) applica i delta allo stato PERSISTITO nel BSM
-			state_after = battle_state_manager.reduce(deltas_arr)
-
-			# 2) side-effects di shell (inventario, ecc.) → delega al BSM (o gestiscili qui se preferisci)
-			#battle_state_manager.apply_shell_side_effects(deltas_arr)
-
-		# aggiungo state_after nel result per comodità di UI/debug
-		res_dict["state_after"] = state_after
-
-		emit_signal("action_resolved", res_dict)
-		await get_tree().process_frame
-
-	_running = false
-	emit_signal("queue_empty")
-
-
-# Converte un Array di ActionDelta (o misto) in Array di Dictionary
-func _to_dict_deltas(deltas: Array) -> Array:
-	var out: Array = []
-	for d in deltas:
-		if typeof(d) == TYPE_DICTIONARY:
-			out.push_back(d)
-		elif is_instance_of(d, ActionDelta):
-			out.push_back(d.to_dict())
-	return out
+#var _queue: Array = []
+#var _running: bool = false
+#
+#@onready var battle_state_manager : BattleStateManager = %BattleStateManager
+#
+#func enqueue(action: AbstractAction, payload: Dictionary, rng_seed: int = 0) -> void:
+	#_queue.push_back({"action": action, "payload": payload, "seed": rng_seed})
+	#if not _running:
+		#_running = true
+		#_process_queue()
+#
+#func _process_queue() -> void:
+	#while not _queue.is_empty():
+		#var item: Dictionary = _queue.pop_front()
+		#var action: AbstractAction = item["action"]
+		#var payload: Dictionary = item["payload"]
+		#var seed: int = int(item.get("seed", 0))
+#
+		## snapshot prima dell'azione (non modifichiamo l'originale)
+		#var state_before: Dictionary = battle_state_manager.snapshot()
+#
+		#emit_signal("action_started", payload.get("caster_id"), action.id(), payload)
+#
+		#var res = ActionResolver.run(action, state_before, payload, seed)
+#
+		## normalizza: accetta sia ActionResult che Dictionary
+		#var ok := false
+		#var deltas_arr: Array = []
+		#var res_dict: Dictionary
+#
+#
+		#ok = res.is_ok()
+		#deltas_arr = res.get_deltas()
+		#res_dict = res.to_dict()
+		#
+#
+		#var state_after := state_before
+		#if ok:
+			## 1) applica i delta allo stato PERSISTITO nel BSM
+			#state_after = battle_state_manager.reduce(deltas_arr)
+#
+			## 2) side-effects di shell (inventario, ecc.) → delega al BSM (o gestiscili qui se preferisci)
+			##battle_state_manager.apply_shell_side_effects(deltas_arr)
+#
+		## aggiungo state_after nel result per comodità di UI/debug
+		#res_dict["state_after"] = state_after
+#
+		#emit_signal("action_resolved", res_dict)
+		#await get_tree().process_frame
+#
+	#_running = false
+	#emit_signal("queue_empty")
+#
+#
+## Converte un Array di ActionDelta (o misto) in Array di Dictionary
+#func _to_dict_deltas(deltas: Array) -> Array:
+	#var out: Array = []
+	#for d in deltas:
+		#if typeof(d) == TYPE_DICTIONARY:
+			#out.push_back(d)
+		#elif is_instance_of(d, ActionDelta):
+			#out.push_back(d.to_dict())
+	#return out
 #
 #
 ## Ora prende direttamente l'array di deltas (in formato Dictionary)

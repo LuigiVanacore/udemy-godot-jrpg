@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://502bbrd3bubs"]
+[gd_scene load_steps=4 format=3 uid="uid://502bbrd3bubs"]
 
+[ext_resource type="Script" uid="uid://5hc4t2rj7joh" path="res://scenes/UI/ui_unit_lifebar/ui_unit_life_bar.gd" id="1_6kbwc"]
 [ext_resource type="Texture2D" uid="uid://d1dofgixbnq7s" path="res://assets/ui_unit_hud/ui_life_bar/life_bar_bg.png" id="1_smnqy"]
 [ext_resource type="Texture2D" uid="uid://vvw453gjgkj8" path="res://assets/ui_unit_hud/ui_life_bar/life_bar_fill.png" id="2_6kbwc"]
 
@@ -10,6 +11,7 @@ anchor_right = 0.0390625
 anchor_bottom = 0.013888889
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_6kbwc")
 metadata/_edit_use_anchors_ = true
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]

@@ -15,7 +15,7 @@ static func apply_textures_to_library(
 ) -> void:
 	var lib : AnimationLibrary = animationSet.animlibrary
 	var library_name : StringName = animationSet.animLibrary_name
-	var tex_map : Array[AnimClipData] = animationSet.tex_map
+	var tex_map : Array[AnimClipData] = animationSet.animClips
 	if lib == null:
 		push_error("AnimationLibrary '%s' non trovata.")
 		return

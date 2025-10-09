@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://dpx1ew27j6jnx"]
+[gd_scene load_steps=22 format=3 uid="uid://dpx1ew27j6jnx"]
 
 [ext_resource type="Script" uid="uid://cyn67ewg7ebsb" path="res://scenes/battle_scene/battle_scene.gd" id="1_dkakg"]
 [ext_resource type="Script" uid="uid://crfa7frms184w" path="res://scenes/battle_scene/select_target_state.gd" id="2_buq4q"]
@@ -14,12 +14,10 @@
 [ext_resource type="Script" uid="uid://db6daiu5q6mjl" path="res://scripts/combat/action_manager.gd" id="6_lox8n"]
 [ext_resource type="Resource" uid="uid://lbmolegycmpq" path="res://data/game_data/character_data/black_mage.tres" id="7_8r7ii"]
 [ext_resource type="Script" uid="uid://c2heavoo008nf" path="res://scenes/battle_scene/end_turn_state.gd" id="7_as0wq"]
-[ext_resource type="Script" uid="uid://jn5u78ayexmk" path="res://scenes/battle_scene/battle_state_manager.gd" id="7_jgikl"]
 [ext_resource type="Script" uid="uid://c8rs6wt3t8but" path="res://scenes/battle_scene/end_battle_state.gd" id="8_cob1g"]
 [ext_resource type="Resource" uid="uid://bxsx5g3qdln6n" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_animation_set.tres" id="8_dkakg"]
 [ext_resource type="Resource" uid="uid://dxj3uve0hes2y" path="res://data/game_data/character_data/warrior.tres" id="8_of7j8"]
 [ext_resource type="Resource" uid="uid://5ftkenvelip4" path="res://data/game_data/animations/battle_animation/warrior_animations/warrior_animation_set.tres" id="9_dkakg"]
-[ext_resource type="Script" uid="uid://csne1iy35xei4" path="res://scenes/battle_scene/action_queue.gd" id="10_jn10d"]
 [ext_resource type="Resource" uid="uid://cdgrn4m1rkmaa" path="res://data/game_data/character_data/base_enemy.tres" id="11_4jw7k"]
 [ext_resource type="PackedScene" uid="uid://b7xxaqs5jvvbm" path="res://scenes/UI/battle_hud/battle_hud.tscn" id="11_e2rkv"]
 [ext_resource type="Resource" uid="uid://dxe7vc51wswbg" path="res://data/game_data/animations/battle_animation/brigant_battle_animations/brigant_battle_animation_set.tres" id="12_1net8"]
@@ -59,14 +57,6 @@ script = ExtResource("8_cob1g")
 [node name="ActionManager" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("6_lox8n")
-
-[node name="ActionQueue" type="Node" parent="ActionManager"]
-unique_name_in_owner = true
-script = ExtResource("10_jn10d")
-
-[node name="BattleStateManager" type="Node" parent="ActionManager/ActionQueue"]
-unique_name_in_owner = true
-script = ExtResource("7_jgikl")
 
 [node name="TurnManager" type="Node" parent="."]
 unique_name_in_owner = true
@@ -116,21 +106,9 @@ unique_name_in_owner = true
 
 [node name="Marker2D" type="Marker2D" parent="Formations/FormationEnemyParty"]
 
-[node name="Unit" parent="Formations/FormationEnemyParty/Marker2D" instance=ExtResource("6_0qxrm")]
-anim_set = ExtResource("12_1net8")
-character_data = ExtResource("11_4jw7k")
-
 [node name="Marker2D2" type="Marker2D" parent="Formations/FormationEnemyParty"]
 
-[node name="Unit" parent="Formations/FormationEnemyParty/Marker2D2" instance=ExtResource("6_0qxrm")]
-anim_set = ExtResource("12_1net8")
-character_data = ExtResource("11_4jw7k")
-
 [node name="Marker2D3" type="Marker2D" parent="Formations/FormationEnemyParty"]
-
-[node name="Unit" parent="Formations/FormationEnemyParty/Marker2D3" instance=ExtResource("6_0qxrm")]
-anim_set = ExtResource("12_1net8")
-character_data = ExtResource("11_4jw7k")
 
 [node name="Marker2D4" type="Marker2D" parent="Formations/FormationEnemyParty"]
 

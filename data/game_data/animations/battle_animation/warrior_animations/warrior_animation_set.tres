@@ -1,14 +1,16 @@
-[gd_resource type="Resource" script_class="AnimSetData" load_steps=6 format=3 uid="uid://5ftkenvelip4"]
+[gd_resource type="Resource" script_class="AnimSetData" load_steps=8 format=3 uid="uid://5ftkenvelip4"]
 
-[ext_resource type="AnimationLibrary" path="res://data/game_data/animations/battle_animation/character_battle_animation.tres" id="1_pjt86"]
+[ext_resource type="AnimationLibrary" uid="uid://c06o218yiwyfc" path="res://data/game_data/animations/battle_animation/character_battle_animation.tres" id="1_pjt86"]
 [ext_resource type="Script" uid="uid://cflm4cr17v5gx" path="res://data/scripts/anim_set_data.gd" id="2_gt7fa"]
 [ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="3_jfmw6"]
 [ext_resource type="Resource" uid="uid://d02tv4hjfouxv" path="res://data/game_data/animations/battle_animation/warrior_animations/warrior_idle.tres" id="4_uuq40"]
 [ext_resource type="Resource" uid="uid://cjmjfsqysxmmc" path="res://data/game_data/animations/battle_animation/warrior_animations/warrior_dodge.tres" id="5_y6pku"]
+[ext_resource type="Resource" uid="uid://cwd5b3yx21cbv" path="res://data/game_data/animations/battle_animation/warrior_animations/warrior_slash_attack.tres" id="6_jfmw6"]
+[ext_resource type="Resource" uid="uid://crgdpm70o2b7n" path="res://data/game_data/animations/battle_animation/warrior_animations/warrior_damage.tres" id="7_uuq40"]
 
 [resource]
 script = ExtResource("2_gt7fa")
 animLibrary_name = &"character_battle_animation"
 animlibrary = ExtResource("1_pjt86")
-tex_map = Array[ExtResource("3_jfmw6")]([ExtResource("4_uuq40"), ExtResource("5_y6pku")])
+animClips = Array[ExtResource("3_jfmw6")]([ExtResource("4_uuq40"), ExtResource("6_jfmw6"), ExtResource("5_y6pku"), ExtResource("7_uuq40")])
 metadata/_custom_type_script = "uid://cflm4cr17v5gx"

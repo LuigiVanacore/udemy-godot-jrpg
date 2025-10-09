@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AnimSetData" load_steps=15 format=3 uid="uid://bxsx5g3qdln6n"]
 
-[ext_resource type="AnimationLibrary" path="res://data/game_data/animations/battle_animation/character_battle_animation.tres" id="1_whyfk"]
+[ext_resource type="AnimationLibrary" uid="uid://c06o218yiwyfc" path="res://data/game_data/animations/battle_animation/character_battle_animation.tres" id="1_whyfk"]
 [ext_resource type="Script" uid="uid://cflm4cr17v5gx" path="res://data/scripts/anim_set_data.gd" id="2_c1xsm"]
 [ext_resource type="Script" uid="uid://cy4a34d0tda4r" path="res://data/scripts/anim_clip_data.gd" id="3_hdfj1"]
 [ext_resource type="Resource" uid="uid://vkaw4lvov5vf" path="res://data/game_data/animations/battle_animation/black_mage_animations/black_mage_idle.tres" id="4_7tbd3"]
@@ -19,5 +19,5 @@
 script = ExtResource("2_c1xsm")
 animLibrary_name = &"character_battle_animation"
 animlibrary = ExtResource("1_whyfk")
-tex_map = Array[ExtResource("3_hdfj1")]([ExtResource("4_7tbd3"), ExtResource("5_c1xsm"), ExtResource("6_pdjnk"), ExtResource("7_1g15n"), ExtResource("8_o74jd"), ExtResource("9_1qc8x"), ExtResource("10_28j7u"), ExtResource("11_h5tra"), ExtResource("12_hikt2"), ExtResource("13_ilsyf"), ExtResource("14_70mbu")])
+animClips = Array[ExtResource("3_hdfj1")]([ExtResource("5_c1xsm"), ExtResource("6_pdjnk"), ExtResource("7_1g15n"), ExtResource("8_o74jd"), ExtResource("4_7tbd3"), ExtResource("9_1qc8x"), ExtResource("10_28j7u"), ExtResource("11_h5tra"), ExtResource("12_hikt2"), ExtResource("13_ilsyf"), ExtResource("14_70mbu")])
 metadata/_custom_type_script = "uid://cflm4cr17v5gx"

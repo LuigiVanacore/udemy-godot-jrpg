@@ -1,34 +1,163 @@
 # ActionQueue.gd
 class_name ActionManager
 extends Node
-
-signal action_enqueued(action_id: StringName, payload: Dictionary) 
-signal action_effect_applied(action_id: StringName, delta: Dictionary, unit: Node) 
-
-
  
+signal action_started( caster : Unit, action_id : StringName, payload : Dictionary)
+
 
 @export var _rng_seed: int = 0
 
-@onready var action_queue : ActionQueue = $ActionQueue
+var rng : RandomNumberGenerator
+ 
 
-func set_seed(seed: int) -> void:
-	_rng_seed = seed 
+
+
+func _ready() -> void:
+	rng = RandomNumberGenerator.new()
+	if _rng_seed != 0:
+		rng.seed = _rng_seed
+
+func set_seed(_seed: int) -> void:
+	_rng_seed = _seed 
  
 
   
+func execute_action(action: AbstractAction)->ActionResult:
+	var payload : Dictionary = action.get_payload()
+	action_started.emit(payload.get("caster"), action.id(), payload)
+
+	var errors: String = action.validate()
+	if not errors.is_empty():
+		return null
+		
+	return action.execute(rng)
  
  
-
-
-
-func commit_attack(caster: Unit, target: Unit) -> void:
-	var action := AttackAction.new()
+ 
+func execute_attack_action(caster: Unit, target: Unit) -> ActionResult:
+	
 	var payload := {
-		"caster_id": caster.get_instance_id(),
-		"target_ids": [target.get_instance_id()],
+		"caster": caster,
+		"target": [target],
 	}
-	action_queue.enqueue(action, payload, _rng_seed)
+	
+	return execute_action(AttackAction.new(payload))
+
+
+
+#func apply_deltas(deltas: Array[ActionDelta]):
+	#if deltas.is_empty():
+		#return  
+#
+	#for ad in deltas:
+		#if ad == null: 
+			#continue
+		#
+		#ad.unit.apply_delta()
+		#
+		#match ad.kind:
+			#ActionDelta.Kind.HP:
+				#var new_hp := unit.get_stat(StatsIds.Stat.HP) + int(ad.value)
+				#var hp_max := unit.get_stat(StatsIds.Stat.HP_MAX)
+				#
+#
+			#ActionDelta.Kind.MP:
+				#var new_mp := unit.get_stat(StatsIds.Stat.MP) + int(ad.value)
+				#var mp_max := unit.get_stat(StatsIds.Stat.MP_MAX) 
+#
+			#ActionDelta.Kind.STATUS_ADD:
+				#var key: StringName = ad.value
+				#var st: Dictionary = us.statuses_state
+				#var stacks := int(ad.meta.get("stacks", 1))
+				#var duration := int(ad.meta.get("duration", -1))
+				#var overwrite := bool(ad.meta.get("overwrite", false))
+				#if overwrite or not st.has(key):
+					#st[key] = {"stacks": max(1, stacks), "duration": duration, "active": true}
+				#else:
+					#var cur: Dictionary = st[key]
+					#cur["stacks"] = max(1, int(cur.get("stacks", 1)) + stacks)
+					#cur["duration"] = max(int(cur.get("duration", -1)), duration)
+					#cur["active"] = true
+					#st[key] = cur
+				#us.statuses_state = st
+#
+			#ActionDelta.Kind.STATUS_REMOVE:
+				#var key_rm: StringName = ad.value
+				#var st2: Dictionary = us.statuses_state
+				#if st2.has(key_rm):
+					#st2.erase(key_rm)
+				#us.statuses_state = st2
+#
+			## altri tipi (CONSUME_ITEM/GIVE_ITEM/CUSTOM) ignorati dal core:
+			#_:
+				#pass
+ 
+
+
+
+
+	 #
+ #
+	#emit_signal("action_started", payload.get("caster"), action.id(), payload)
+#
+	#var res : ActionResult = ActionResolver.run(action, payload, _rng_seed)
+#
+	## normalizza: accetta sia ActionResult che Dictionary
+	#var ok := false
+	#var deltas_arr: Array = []
+	#var res_dict: Dictionary
+ #
+	#ok = res.is_ok()
+ #
+	#if ok:
+		## 1) applica i delta allo stato PERSISTITO nel BSM
+		#state_after = battle_state_manager.reduce(deltas_arr)
+		#
+#ActionResolver.apply_deltas_to_state(_battle_state, deltas) # muta in place
+	#_sync_runtime(deltas)
+	#state_changed.emit(snapshot(), deltas)
+	#return _battle_state
+#
+#func _sync_runtime(deltas: Array) -> void:
+	#for ad in deltas:
+		#if ad == null:
+			#continue
+		#var uid: int = ad.id
+		#var si: StatsInstance = _stats_by_uid.get(uid, null)
+		#var us: UnitState = _battle_state.get(uid, null)
+		#if si == null or us == null:
+			#continue
+#
+		#match ad.kind:
+			#Kind.HP:
+				#si.set_current_hp(int(us.stats_state.get(&"HP", si.current_hp)))
+			#Kind.MP:
+				#si.set_current_mp(int(us.stats_state.get(&"MP", si.current_mp)))
+#
+			#Kind.STATUS_ADD:
+				#var mods_add: Array = ad.meta.get("mods", [])
+				#_apply_temp_mods(si, ad.value, mods_add)  # source = nome status
+				#_reclamp_hp_mp_if_caps_changed(si)
+#
+			#Kind.STATUS_REMOVE:
+				#_clear_temp_mods_by_source(si, ad.value)  # source = nome status
+				#_reclamp_hp_mp_if_caps_changed(si)
+#
+			#_:
+				#pass
+#
+		## 2) side-effects di shell (inventario, ecc.) → delega al BSM (o gestiscili qui se preferisci)
+		##battle_state_manager.apply_shell_side_effects(deltas_arr)
+#
+	## aggiungo state_after nel result per comodità di UI/debug
+	#res_dict["state_after"] = state_after
+#
+	#emit_signal("action_resolved", res_dict)
+	#await get_tree().process_frame
+ #
+ #
+	#
+	
 #
 #func commit_skill(caster: Unit, targets: Array[Unit], data: SkillData) -> void:
 	#var action := SkillAction.new(data)

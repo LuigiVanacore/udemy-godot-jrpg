@@ -6,4 +6,5 @@
 [resource]
 script = ExtResource("1")
 id = &"damage"
+anim_type = 8
 texture = ExtResource("2_tfwkw")

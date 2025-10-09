@@ -6,4 +6,5 @@
 [resource]
 script = ExtResource("1")
 id = &"dead"
+anim_type = 12
 texture = ExtResource("2_21236")

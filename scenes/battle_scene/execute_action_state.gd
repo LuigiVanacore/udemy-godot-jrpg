@@ -15,7 +15,12 @@ func _enter() -> void:
 	_target = blackboard.get_var(_battle_scene.bb_target_unit)
 	_caster = blackboard.get_var(_battle_scene.bb_caster_unit)
 	_action_to_execute = blackboard.get_var(_battle_scene.bb_action_to_execute)
-	_battle_scene.action_manager.commit_attack(_caster, _target)
+	var action_result : ActionResult = _battle_scene.action_manager.execute_attack_action(_caster, _target)
+	
+	if action_result != null:
+		_caster.execute_action(ActionTypes.BattleAction.ATTACK, action_result)
+		await _caster.action_ended	
+	
 	dispatch(_battle_scene.msg_end_turn)
  
 
@@ -27,7 +32,7 @@ func _exit() -> void:
 	# _cursor.visible = false
 	pass
 
-
+ 
  
 			
 			#

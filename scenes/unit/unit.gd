@@ -10,6 +10,9 @@ signal died
 @export var anim_set: AnimSetData    
 @export var character_data : CharacterData
 
+
+var floating_text_scene : PackedScene = preload("uid://bxp2a03d0wbr")
+
 var unit_name : StringName 
 var stats_instance : StatsInstance
 
@@ -18,14 +21,19 @@ var msg_dead : StringName = &"dead"
 var msg_idle : StringName = &"idle"
 var msg_damage : StringName = &"damage"
 
+var bb_action_result : StringName = &"action_result"
+
 var _is_alive : bool = true
 
+@onready var pivot : Marker2D = %Pivot
 @onready var body : Sprite2D = %Body
 @onready var weapon : Sprite2D = %Weapon
 
-@onready var anim: AnimationPlayer = $Anim
-@onready var life_bar : Control = %UI_UnitLifeBar
+@onready var animation_manager : AnimationManager = %AnimationManager
+@onready var animPlayer: AnimationPlayer = $Anim
+@onready var life_bar : LifeBar = %UI_UnitLifeBar
 @onready var target_marker : Marker2D = %TargetMarker
+@onready var floating_text_marker : Marker2D = %FloatingTextMarker
 
 @onready var hsm : LimboHSM = $LimboHSM
 @onready var idleState : LimboState = $LimboHSM/IdleState
@@ -49,14 +57,25 @@ func _ready() -> void:
 	
 	if not character_data.is_party_member:	
 		life_bar.visible = true
+		life_bar.bind_to_unit(self) 
 		body.flip_h = true
 		weapon.flip_h = true
 		target_marker.position.x = -target_marker.position.x
 		
+	
+	hsm.add_transition(idleState, attackState, msg_attack)
+	hsm.add_transition(hsm.ANYSTATE, idleState, msg_idle)  
+	hsm.add_transition(hsm.ANYSTATE, damageState, msg_damage) 
+	
+	hsm.initialize(self)
+	hsm.set_active(true)   
+	
+	hsm.change_active_state(idleState)
+		
 	# Applica texture e griglie per questo personaggio
-	AnimBuilder.apply_textures_to_library(anim, anim_set, &"Pivot/Body")
- 
-	anim.play("character_battle_animation/idle")
+	#AnimBuilder.apply_textures_to_library(animPlayer, anim_set, &"Pivot/Body")
+ #
+	#animPlayer.play("character_battle_animation/idle")
 
 func get_unit_name()->StringName:
 	return unit_name
@@ -66,14 +85,31 @@ func is_alive()->bool:
 
 func is_party_member()->bool:
 	return character_data.is_party_member
-	
+
+func get_stats_instance() -> StatsInstance:
+	return stats_instance
 	
 func get_stat(stat_id : StatsIds.Stat)->int:
 	return stats_instance.total(stat_id)
 	
 func get_target_marker()->Marker2D:
 	return target_marker
+	
+func execute_action(action_id: ActionTypes.BattleAction, result : ActionResult):
+	hsm.blackboard.set_var(bb_action_result, result)
+	hsm.dispatch(msg_attack)
 
+func change_hp(value : int):
+	stats_instance.change_hp(value)
+
+	hsm.dispatch(msg_damage)
+	var floating_text : FloatingText2D = floating_text_scene.instantiate()
+	add_child(floating_text)
+	floating_text.popup_amount(value, floating_text_marker.global_position, FloatingText2D.MESSAGE_TYPE.DAMAGE)
+		
+func change_mp(value : int):
+	pass
+	
 
 func get_stats_state() -> Dictionary[StringName, int]:
 	# Richiede StatsIds nel progetto (come già usi altrove) 
@@ -98,31 +134,7 @@ func get_stats_state() -> Dictionary[StringName, int]:
 func get_inventory_state()-> Dictionary[StringName, int]:
 	return {}	
 
-# Applicazione “shell” dei delta + sync allo snapshot aggiornato
-func apply_delta(delta : Dictionary, updated_state: Dictionary[StringName, int]) -> void:
-	# HP
-	if delta.has("hp"):
-		var new_hp : int = int(updated_state.get("hp", stats_instance.current_hp))
-		var old_hp : int = stats_instance.current_hp
-		stats_instance.current_hp = new_hp
-		if !is_equal_approx(old_hp, new_hp):
-			stats_instance.hp_changed.emit(old_hp, new_hp)
-			if old_hp > new_hp:
-				damage_taken.emit(new_hp)
 
-	# MP
-	if delta.has("mp"):
-		var new_mp : int = int(updated_state.get("mp", stats_instance.current_mp))
-		var old_mp : int = stats_instance.current_mp
-		stats_instance.current_mp = new_mp
-		if !is_equal_approx(old_mp, new_mp):
-			stats_instance.mp_changed.emit(old_mp, new_mp)
-
-	# KO?
-	if updated_state.get("hp", 1) <= 0:
-		_is_alive = false
-		died.emit()
-		hsm.dispatch(msg_dead)
 
 
 

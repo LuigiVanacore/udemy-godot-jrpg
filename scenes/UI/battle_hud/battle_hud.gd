@@ -3,6 +3,7 @@ extends CanvasLayer
 
 
 signal start_battle
+signal select_battle_action
 signal battle_action_selected(action_type : ActionTypes.BattleAction)
 
 @onready var ui_character_status_menu : UI_CharacterStatusMenu = %UI_CharacterStatusMenu
@@ -10,11 +11,15 @@ signal battle_action_selected(action_type : ActionTypes.BattleAction)
 
 func _ready() -> void:
 	ui_action_menu.battle_action_selected.connect(_on_battle_action_selected)
-	
+	select_battle_action.connect(_on_select_battle_action)
 	
 func _on_btn_start_battle_pressed() -> void:
 	start_battle.emit()
-
+	
+ 
+func _on_select_battle_action():
+	ui_action_menu.select_battle_action.emit()
+	
 func _on_battle_action_selected(action_type : ActionTypes.BattleAction):
 	battle_action_selected.emit(action_type)
 	

@@ -1,9 +1,9 @@
 class_name DamageResolver
 extends RefCounted
 
-static func _has_status(u: Dictionary, key: StringName) -> bool:
-	var st: Dictionary = u.get("statuses", {})
-	return bool(st.get(key, false))
+#static func _has_status(u: StatsInstance, key: StringName) -> bool:
+	#var st: Dictionary = u.get("statuses", {})
+	#return bool(st.get(key, false))
 
 static func element_pct(target: Dictionary, element: int) -> int:
 	# Restituisce la resistenza come int percentuale (può essere negativa)
@@ -14,7 +14,7 @@ static func _mul_pct(v: int, pct: int) -> int:
 	# v * (pct / 100) con arrotondamento
 	return int((v * pct + 50) / 100)
 
-static func resolve(caster: Dictionary, target: Dictionary, ctx: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
+static func resolve(caster: StatsInstance, target: StatsInstance, ctx: Dictionary, rng: RandomNumberGenerator) -> Dictionary:
 	var out := {
 		"hit": false,
 		"crit": false,
@@ -29,12 +29,12 @@ static func resolve(caster: Dictionary, target: Dictionary, ctx: Dictionary, rng
 	}
 
 	# --- HIT (INT + bp) ---
-	var acc: int = int(caster.get("acc", 100))
-	var eva: int = int(target.get("eva", 0))
-	if _has_status(caster, &"BLIND"):
-		acc -= 30
-	if _has_status(target, &"OFF_GUARD"):
-		eva -= 10
+	var acc: int = caster.total(StatsIds.Stat.ACC)
+	var eva: int = target.total(StatsIds.Stat.EVA)
+	#if _has_status(caster, &"BLIND"):
+		#acc -= 30
+	#if _has_status(target, &"OFF_GUARD"):
+		#eva -= 10
 
 	var base_hit_pct: int = int(ctx.get("base_hit_pct", 85))
 	var hit_per_point_bp: int = int(ctx.get("hit_per_point_bp", 50)) # 50 bp = 0.50% per punto
@@ -49,9 +49,9 @@ static func resolve(caster: Dictionary, target: Dictionary, ctx: Dictionary, rng
 		return out
 
 	# --- CRIT (INT %) ---
-	var crit_rate_pct: int = int(caster.get("crit_rate", 5))
-	if _has_status(target, &"OFF_GUARD"):
-		crit_rate_pct += 10
+	var crit_rate_pct: int = caster.total(StatsIds.Stat.CRIT_RATE)
+	#if _has_status(target, &"OFF_GUARD"):
+		#crit_rate_pct += 10
 	crit_rate_pct = clamp(crit_rate_pct, 0, 80)
 	out["crit_chance_pct"] = crit_rate_pct
 
@@ -65,8 +65,12 @@ static func resolve(caster: Dictionary, target: Dictionary, ctx: Dictionary, rng
 	var atk_key := "matk" if kind == ActionTypes.DamageKind.MAGICAL else "atk"
 	var def_key := "mdef" if kind == ActionTypes.DamageKind.MAGICAL else "def"
 
-	var atk: int = int(caster.get(atk_key, 5))
-	var defn: int = int(target.get(def_key, 0))
+	var atk: int = caster.total(StatsIds.Stat.ATK) \
+				  if kind == ActionTypes.DamageKind.MAGICAL \
+				  else  caster.total(StatsIds.Stat.MATK)
+	var defn: int = target.total(StatsIds.Stat.DEF) \
+				  if kind == ActionTypes.DamageKind.MAGICAL \
+				  else  caster.total(StatsIds.Stat.MDEF)
 	var def_eff: int = defn
 	if is_crit:
 		var crit_def_pen_pct: int = int(ctx.get("crit_def_pen_pct", 50)) # es. 50 = -50% difesa su crit
@@ -91,43 +95,43 @@ static func resolve(caster: Dictionary, target: Dictionary, ctx: Dictionary, rng
 
 	# --- ELEMENT & STATUS MULTIPLIERS ---
 	var element: int = int(ctx.get("element", ElementTypes.Element.PHYSICAL))
-	var ele_pct: int = element_pct(target, element)
-	var mult_pct: int = ele_pct
+	#var ele_pct: int = element_pct(target, element)
+	#var mult_pct: int = ele_pct
 
-	if _has_status(target, &"PROTECT") and kind == ActionTypes.DamageKind.PHYSICAL:
-		mult_pct = _mul_pct(mult_pct, 75)
-	if _has_status(target, &"SHELL") and kind == ActionTypes.DamageKind.MAGICAL:
-		mult_pct = _mul_pct(mult_pct, 75)
-	if _has_status(target, &"GUARDING"):
-		mult_pct = _mul_pct(mult_pct, 50)
-	if _has_status(target, &"OFF_GUARD"):
-		mult_pct = _mul_pct(mult_pct, 125)
+	#if _has_status(target, &"PROTECT") and kind == ActionTypes.DamageKind.PHYSICAL:
+		#mult_pct = _mul_pct(mult_pct, 75)
+	#if _has_status(target, &"SHELL") and kind == ActionTypes.DamageKind.MAGICAL:
+		#mult_pct = _mul_pct(mult_pct, 75)
+	#if _has_status(target, &"GUARDING"):
+		#mult_pct = _mul_pct(mult_pct, 50)
+	#if _has_status(target, &"OFF_GUARD"):
+		#mult_pct = _mul_pct(mult_pct, 125)
 
 	var final_val: int = post_var
 	if is_crit:
-		var crit_dmg_pct: int = int(caster.get("crit_dmg", 50)) # es. 50 = +50%
+		var crit_dmg_pct: int = caster.total(StatsIds.Stat.CRIT_DMG)
 		final_val = _mul_pct(final_val, 100 + crit_dmg_pct)
-	final_val = _mul_pct(final_val, mult_pct)
+	#final_val = _mul_pct(final_val, mult_pct)
 
 	var dmg: int = abs(final_val)
 
 	# --- TAGS ---
 	var tags: Array = []
-	if ele_pct == 0:
-		tags.append("IMMUNE")
-		dmg = 0
-	elif ele_pct < 0:
-		tags.append("ABSORB")
-		dmg = -dmg
-	elif ele_pct > 105:
-		tags.append("WEAKNESS")
-	elif ele_pct < 95:
-		tags.append("RESIST")
+	#if ele_pct == 0:
+		#tags.append("IMMUNE")
+		#dmg = 0
+	#elif ele_pct < 0:
+		#tags.append("ABSORB")
+		#dmg = -dmg
+	#elif ele_pct > 105:
+		#tags.append("WEAKNESS")
+	#elif ele_pct < 95:
+		#tags.append("RESIST")
 
 	out["hit"] = true
 	out["damage"] = dmg
 	out["tags"] = tags
-	out["mults_pct"] = {"element_pct": ele_pct, "combined_pct": mult_pct}
+	#out["mults_pct"] = {"element_pct": ele_pct, "combined_pct": mult_pct}
 	out["breakdown"] = {
 		"raw": raw,
 		"def_eff": def_eff,

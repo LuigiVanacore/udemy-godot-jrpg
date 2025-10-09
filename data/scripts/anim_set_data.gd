@@ -5,4 +5,16 @@ extends Resource
 @export var animlibrary : AnimationLibrary
 
 # Spritesheet con più frame (Sprite2D usa hframes/vframes/frame)
-@export var tex_map : Array[AnimClipData]
+@export var animClips : Array[AnimClipData]
+
+
+
+
+
+func get_animName(type : AnimationTypes.Types) -> StringName:
+	for clip in animClips:
+		if clip.anim_type == type:
+			return StringName("%s/%s" % [animLibrary_name, clip.id])
+	return ""
+
+
